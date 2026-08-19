@@ -220,11 +220,11 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
   const filteredStreets = district.streets.filter((s) => {
     // 1. Text filter
     if (streetFilter) {
-      const filterNorm = streetFilter.toLowerCase().trim();
+      const filterNorm = String(streetFilter).toLowerCase().trim();
       const matchesText =
-        s.streetName.toLowerCase().includes(filterNorm) ||
-        s.aliases.some((a) => a.toLowerCase().includes(filterNorm)) ||
-        (s.notes && s.notes.toLowerCase().includes(filterNorm));
+        (s.streetName && String(s.streetName).toLowerCase().includes(filterNorm)) ||
+        (s.aliases && s.aliases.some((a) => a && String(a).toLowerCase().includes(filterNorm))) ||
+        (s.notes && String(s.notes).toLowerCase().includes(filterNorm));
       if (!matchesText) return false;
     }
 

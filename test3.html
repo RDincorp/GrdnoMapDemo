@@ -1,0 +1,19 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://api-maps.yandex.ru/v3/?apikey=0a59849d-20dc-4962-bc60-6716e8436d1c&lang=ru_RU"></script>
+</head>
+<body>
+    <div id="map" style="width:500px;height:500px"></div>
+    <script>
+        initMap();
+        async function initMap() {
+            await ymaps3.ready;
+            const {YMap} = ymaps3;
+            const map = new YMap(document.getElementById('map'), {location: {center:[0,0], zoom:1}});
+            console.log("setLocation:", typeof map.setLocation);
+            console.log("update:", typeof map.update);
+        }
+    </script>
+</body>
+</html>

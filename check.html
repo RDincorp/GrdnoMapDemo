@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <script src="https://api-maps.yandex.ru/v3/?apikey=0a59849d-20dc-4962-bc60-6716e8436d1c&lang=ru_RU"></script>
+</head>
+<body>
+    <script>
+        initMap();
+        async function initMap() {
+            await ymaps3.ready;
+            console.log("YMap:", !!ymaps3.YMap);
+            console.log("YMapDefaultSchemeLayer:", !!ymaps3.YMapDefaultSchemeLayer);
+            
+            try {
+                const theme = await ymaps3.import('@yandex/ymaps3-default-ui-theme');
+                console.log("theme YMapDefaultSchemeLayer:", !!theme.YMapDefaultSchemeLayer);
+            } catch(e) {
+                console.log("error theme:", e.message);
+            }
+        }
+    </script>
+</body>
+</html>

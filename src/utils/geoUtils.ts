@@ -32,8 +32,9 @@ export function findDistrictByCoordinates(point: [number, number], districts: Di
 /**
  * Normalizes text for typo-tolerant, casing-neutral matching
  */
-export function normalizeText(text: string): string {
-  return text
+export function normalizeText(text: string | undefined | null): string {
+  if (!text) return '';
+  return String(text)
     .toLowerCase()
     .replace(/ё/g, 'е')
     .replace(/[\.,\-\/#!$%\^&\*;:{}=\-_`~()]/g, ' ')
@@ -49,8 +50,9 @@ export function normalizeText(text: string): string {
  * - "улица Горького дом 88а" -> street: "горького", house: 88
  * - "Советская" -> street: "советская", house: undefined
  */
-export function parseAddressQuery(query: string): { streetPart: string; houseNumber?: number; rawHouse?: string; isAllHouses?: boolean } {
-  let cleaned = query.toLowerCase().replace(/ё/g, 'е').trim();
+export function parseAddressQuery(query: string | undefined | null): { streetPart: string; houseNumber?: number; rawHouse?: string; isAllHouses?: boolean } {
+  if (!query) return { streetPart: '', isAllHouses: false };
+  let cleaned = String(query).toLowerCase().replace(/ё/g, 'е').trim();
 
   // Strip prefix words like "гродно", "г.", "город", "улица", "ул", "проспект", "пр", "бульвар", "б-р", "пер", "переулок"
   const prefixRegex = /^(гродно|г|город|ул|улица|проспект|пр|пр-т|бульвар|б-р|бул|пер|переулок)\s+/i;
@@ -351,14 +353,15 @@ function scoreStreetMatch(queryStreet: string, streetName: string, aliases: stri
  * Comprehensive Smart Search for the GIS Portal
  */
 export function searchEverything(
-  rawQuery: string,
+  rawQuery: string | undefined | null,
   districts: District[],
   deputies: Deputy[],
   institutions: Institution[]
 ): SearchResult[] {
-  const query = rawQuery.trim();
+  if (!rawQuery) return [];
+  const query = String(rawQuery).trim();
   // Starts smart suggestion from the first 3 characters!
-  if (!query || query.length < 3) return [];
+  if (query.length < 3) return [];
 
   const normQuery = normalizeText(query);
   const { streetPart, houseNumber, rawHouse } = parseAddressQuery(query);

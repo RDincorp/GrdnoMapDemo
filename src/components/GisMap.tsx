@@ -1,5 +1,4 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { load } from '@2gis/mapgl';
 import { District, Deputy, Institution, ReceptionScheduleItem } from '../types';
 import { GRODNO_MAP_CONFIG } from '../data/mockData';
 import { Layers, Locate, Maximize2, Building2, Check } from 'lucide-react';
@@ -36,8 +35,8 @@ export const GisMap: React.FC<GisMapProps> = ({
   isLocating,
 }) => {
   const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null); // mapglAPI.Map
-  const mapglApiRef = useRef<any>(null); // mapglAPI reference
+  const mapInstanceRef = useRef<any>(null); // ymaps3.YMap
+  const ymapsApiRef = useRef<any>(null); // ymaps3 reference
   const markersRef = useRef<any[]>([]); // To store created markers
   const userMarkerRef = useRef<any>(null);
   const searchMarkerRef = useRef<any>(null);
@@ -46,42 +45,65 @@ export const GisMap: React.FC<GisMapProps> = ({
   const [showReceptions, setShowReceptions] = useState<boolean>(true);
   const [showInstitutions, setShowInstitutions] = useState<boolean>(true);
 
-  // Helper to convert internal [lat, lng] to 2GIS [lon, lat]
+  // Helper to convert internal [lat, lng] to Yandex [lon, lat]
   const toMapGLCoords = (coords: [number, number]): [number, number] => [coords[1], coords[0]];
 
   // Initialize Map
   useEffect(() => {
-    let map: any;
+    let isCancelled = false;
 
-    load().then((mapglAPI) => {
+    const initMap = async () => {
       if (!mapContainerRef.current) return;
       
-      mapglApiRef.current = mapglAPI;
+      // Wait for the Yandex Maps API script to load
+      while (typeof window.ymaps3 === 'undefined') {
+        if (isCancelled) return;
+        await new Promise(resolve => setTimeout(resolve, 100));
+      }
+      
+      await window.ymaps3.ready;
+      if (isCancelled) return;
 
-      map = new mapglAPI.Map(mapContainerRef.current, {
-        center: toMapGLCoords(GRODNO_MAP_CONFIG.defaultCenter),
-        zoom: GRODNO_MAP_CONFIG.defaultZoom,
-        key: 'a1893935-6834-4445-8d76-13a40e41f4b2',
-        zoomControl: false,
+      const { YMap } = window.ymaps3;
+      
+      // Load default UI theme for scheme and features layers
+      const { YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } = await window.ymaps3.import('@yandex/ymaps3-default-ui-theme');
+      
+      ymapsApiRef.current = window.ymaps3;
+
+      // Ensure we don't initialize multiple times
+      if (mapInstanceRef.current) return;
+
+      const map = new YMap(mapContainerRef.current, {
+        location: {
+          center: toMapGLCoords(GRODNO_MAP_CONFIG.defaultCenter),
+          zoom: GRODNO_MAP_CONFIG.defaultZoom,
+        }
       });
       
+      map.addChild(new YMapDefaultSchemeLayer());
+      map.addChild(new YMapDefaultFeaturesLayer());
+      
       mapInstanceRef.current = map;
-    });
+    };
+    
+    initMap().catch(console.error);
 
     return () => {
-      if (map) {
-        map.destroy();
-        mapInstanceRef.current = null;
+      isCancelled = true;
+      if (mapContainerRef.current) {
+        mapContainerRef.current.innerHTML = '';
       }
+      mapInstanceRef.current = null;
     };
   }, []);
 
   // Render Markers (Receptions & Institutions)
   useEffect(() => {
-    if (!mapInstanceRef.current || !mapglApiRef.current) return;
+    if (!mapInstanceRef.current || !ymapsApiRef.current) return;
 
     // Clear old markers
-    markersRef.current.forEach(m => m.destroy());
+    markersRef.current.forEach(m => mapInstanceRef.current.removeChild(m));
     markersRef.current = [];
 
     // 1. Institutions Markers
@@ -103,14 +125,15 @@ export const GisMap: React.FC<GisMapProps> = ({
           </div>
         `;
 
-        const marker = new mapglApiRef.current.HtmlMarker(mapInstanceRef.current, {
-          coordinates: toMapGLCoords(inst.coordinates),
-          html: iconHtml,
-        });
+        const el = document.createElement('div');
+        el.innerHTML = iconHtml;
+        el.addEventListener('click', () => onSelectInstitution(inst));
 
-        // Add click listener
-        marker.getContent().addEventListener('click', () => onSelectInstitution(inst));
-        
+        const marker = new ymapsApiRef.current.YMapMarker({
+          coordinates: toMapGLCoords(inst.coordinates),
+        }, el);
+
+        mapInstanceRef.current.addChild(marker);
         markersRef.current.push(marker);
       });
     }
@@ -138,12 +161,15 @@ export const GisMap: React.FC<GisMapProps> = ({
             </div>
           `;
 
-          const marker = new mapglApiRef.current.HtmlMarker(mapInstanceRef.current, {
-            coordinates: toMapGLCoords(schedule.coordinates),
-            html: iconHtml,
-          });
+          const el = document.createElement('div');
+          el.innerHTML = iconHtml;
+          el.addEventListener('click', () => onSelectReception(schedule, deputy, district));
 
-          marker.getContent().addEventListener('click', () => onSelectReception(schedule, deputy, district));
+          const marker = new ymapsApiRef.current.YMapMarker({
+            coordinates: toMapGLCoords(schedule.coordinates),
+          }, el);
+
+          mapInstanceRef.current.addChild(marker);
           markersRef.current.push(marker);
         });
       });
@@ -162,11 +188,11 @@ export const GisMap: React.FC<GisMapProps> = ({
 
   // Render User Location Geolocation Pin
   useEffect(() => {
-    if (!mapInstanceRef.current || !mapglApiRef.current) return;
+    if (!mapInstanceRef.current || !ymapsApiRef.current) return;
 
     if (userLocation) {
       if (userMarkerRef.current) {
-        userMarkerRef.current.setCoordinates(toMapGLCoords(userLocation));
+        userMarkerRef.current.update({ coordinates: toMapGLCoords(userLocation) });
       } else {
         const iconHtml = `
           <div class="relative flex items-center justify-center">
@@ -176,24 +202,26 @@ export const GisMap: React.FC<GisMapProps> = ({
             </div>
           </div>
         `;
-        userMarkerRef.current = new mapglApiRef.current.HtmlMarker(mapInstanceRef.current, {
+        const el = document.createElement('div');
+        el.innerHTML = iconHtml;
+        userMarkerRef.current = new ymapsApiRef.current.YMapMarker({
           coordinates: toMapGLCoords(userLocation),
-          html: iconHtml,
-        });
+        }, el);
+        mapInstanceRef.current.addChild(userMarkerRef.current);
       }
     } else if (userMarkerRef.current) {
-      userMarkerRef.current.destroy();
+      mapInstanceRef.current.removeChild(userMarkerRef.current);
       userMarkerRef.current = null;
     }
   }, [userLocation]);
 
   // Render Searched Address/Location Pin
   useEffect(() => {
-    if (!mapInstanceRef.current || !mapglApiRef.current) return;
+    if (!mapInstanceRef.current || !ymapsApiRef.current) return;
 
     if (searchedLocation) {
       if (searchMarkerRef.current) {
-        searchMarkerRef.current.setCoordinates(toMapGLCoords(searchedLocation.coordinates));
+        searchMarkerRef.current.update({ coordinates: toMapGLCoords(searchedLocation.coordinates) });
       } else {
         const iconHtml = `
           <div class="relative flex items-center justify-center" style="transform: translate(0, -50%);">
@@ -204,17 +232,18 @@ export const GisMap: React.FC<GisMapProps> = ({
           </div>
         `;
         
-        searchMarkerRef.current = new mapglApiRef.current.HtmlMarker(mapInstanceRef.current, {
+        const el = document.createElement('div');
+        el.innerHTML = iconHtml;
+        searchMarkerRef.current = new ymapsApiRef.current.YMapMarker({
           coordinates: toMapGLCoords(searchedLocation.coordinates),
-          html: iconHtml,
-        });
+        }, el);
+        mapInstanceRef.current.addChild(searchMarkerRef.current);
       }
 
       // Center map on searched location
-      mapInstanceRef.current.setCenter(toMapGLCoords(searchedLocation.coordinates), { duration: 800 });
-      mapInstanceRef.current.setZoom(16, { duration: 800 });
+      mapInstanceRef.current.setLocation({ center: toMapGLCoords(searchedLocation.coordinates), zoom: 16, duration: 800 });
     } else if (searchMarkerRef.current) {
-      searchMarkerRef.current.destroy();
+      mapInstanceRef.current.removeChild(searchMarkerRef.current);
       searchMarkerRef.current = null;
     }
   }, [searchedLocation]);
@@ -224,24 +253,19 @@ export const GisMap: React.FC<GisMapProps> = ({
     if (!mapInstanceRef.current) return;
 
     if (searchedLocation) {
-        mapInstanceRef.current.setCenter(toMapGLCoords(searchedLocation.coordinates), { duration: 800 });
-        mapInstanceRef.current.setZoom(16, { duration: 800 });
+        mapInstanceRef.current.setLocation({ center: toMapGLCoords(searchedLocation.coordinates), zoom: 16, duration: 800 });
     } else if (selectedReception) {
-        mapInstanceRef.current.setCenter(toMapGLCoords(selectedReception.coordinates), { duration: 800 });
-        mapInstanceRef.current.setZoom(16, { duration: 800 });
+        mapInstanceRef.current.setLocation({ center: toMapGLCoords(selectedReception.coordinates), zoom: 16, duration: 800 });
     } else if (selectedInstitution) {
-        mapInstanceRef.current.setCenter(toMapGLCoords(selectedInstitution.coordinates), { duration: 800 });
-        mapInstanceRef.current.setZoom(16, { duration: 800 });
+        mapInstanceRef.current.setLocation({ center: toMapGLCoords(selectedInstitution.coordinates), zoom: 16, duration: 800 });
     } else if (selectedDistrict) {
-        mapInstanceRef.current.setCenter(toMapGLCoords(selectedDistrict.center), { duration: 800 });
-        mapInstanceRef.current.setZoom(14.5, { duration: 800 });
+        mapInstanceRef.current.setLocation({ center: toMapGLCoords(selectedDistrict.center), zoom: 14.5, duration: 800 });
     }
   }, [selectedDistrict, selectedInstitution, selectedReception, searchedLocation]);
 
   const handleResetView = () => {
     if (!mapInstanceRef.current) return;
-    mapInstanceRef.current.setCenter(toMapGLCoords(GRODNO_MAP_CONFIG.defaultCenter), { duration: 800 });
-    mapInstanceRef.current.setZoom(GRODNO_MAP_CONFIG.defaultZoom, { duration: 800 });
+    mapInstanceRef.current.setLocation({ center: toMapGLCoords(GRODNO_MAP_CONFIG.defaultCenter), zoom: GRODNO_MAP_CONFIG.defaultZoom, duration: 800 });
   };
 
   return (
@@ -301,7 +325,8 @@ export const GisMap: React.FC<GisMapProps> = ({
           type="button"
           onClick={() => {
             if (mapInstanceRef.current) {
-                mapInstanceRef.current.setZoom(mapInstanceRef.current.getZoom() + 1, { duration: 300 });
+                const zoom = mapInstanceRef.current.zoom;
+                mapInstanceRef.current.setLocation({ zoom: zoom + 1, duration: 300 });
             }
           }}
           className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-700 font-bold hover:bg-slate-50 active:scale-95 transition text-lg border border-slate-100"
@@ -313,7 +338,8 @@ export const GisMap: React.FC<GisMapProps> = ({
           type="button"
           onClick={() => {
             if (mapInstanceRef.current) {
-                mapInstanceRef.current.setZoom(mapInstanceRef.current.getZoom() - 1, { duration: 300 });
+                const zoom = mapInstanceRef.current.zoom;
+                mapInstanceRef.current.setLocation({ zoom: zoom - 1, duration: 300 });
             }
           }}
           className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-700 font-bold hover:bg-slate-50 active:scale-95 transition text-lg border border-slate-100"
