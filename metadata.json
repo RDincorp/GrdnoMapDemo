@@ -1,0 +1,6 @@
+{
+  "name": "Политическая карта Гродно | Паспорт территории",
+  "description": "Интерактивный портал гражданина: поиск округа, депутатов, приемных и органов власти по адресу в г. Гродно.",
+  "requestFramePermissions": ["geolocation"],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

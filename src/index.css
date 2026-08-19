@@ -1,0 +1,13 @@
+@import "tailwindcss";
+
+.custom-inst-marker, .custom-rec-marker, .user-geo-marker, .search-loc-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-map-hover-label {
+  z-index: 99999 !important;
+  pointer-events: none !important;
+}
+
+
