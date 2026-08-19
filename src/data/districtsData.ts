@@ -2,660 +2,933 @@ import { District } from '../types';
 
 export const DISTRICTS_DATA: District[] = [
   {
-    id: 'district-1',
-    number: 1,
-    name: 'Центральный избирательный округ №1',
-    shortName: 'Округ №1 (Центральный)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#7c3aed',
-    strokeColor: '#6d28d9',
-    votersCount: 11800,
-    populationEst: 15200,
-    center: [53.694716, 23.817186],
-    polygonCoordinates: [],
-    deputyId: 'deputy-1',
-    keyObjects: [
-      'Учреждение образования по ул. Сухомбаева, 1',
-      'Общественная приемная по ул. Ожешко, 11',
-      'Парк Жилибера',
+    "id": "district-1",
+    "number": 1,
+    "name": "Каложский избирательный округ № 1",
+    "shortName": "Округ №1 (Каложский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
-    description: 'Центральная часть Ленинского района, район улиц Сухомбаева, Ожешко, Академическая, 1 Мая.',
-    streets: [
-      { streetName: 'улица Сухомбаева', aliases: ['ул. Сухомбаева', 'Сухомбаева'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Элизы Ожешко', aliases: ['ул. Ожешко', 'Ожешко', 'улица Ожешко', 'Элизы Ожешко'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Академическая', aliases: ['ул. Академическая', 'Академическая'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица 1 Мая', aliases: ['ул. 1 Мая', '1 Мая', 'Первого Мая'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Волковича', aliases: ['ул. Волковича', 'Волковича'], houseType: 'all', notes: 'Все дома' },
-    ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-1",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-2',
-    number: 2,
-    name: 'Виленский избирательный округ №2',
-    shortName: 'Округ №2 (Виленский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#2563eb',
-    strokeColor: '#1d4ed8',
-    votersCount: 12100,
-    populationEst: 15600,
-    center: [53.684074, 23.828127],
-    polygonCoordinates: [],
-    deputyId: 'deputy-2',
-    keyObjects: ['Приемный пункт по ул. Виленская, 22', 'Здание по ул. Дзержинского, 8'],
-    description: 'Исторический центр, район улиц Виленская, Дзержинского (начало), Большая Троицкая.',
-    streets: [
-      { streetName: 'улица Виленская', aliases: ['ул. Виленская', 'Виленская'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Дзержинского', aliases: ['ул. Дзержинского', 'Дзержинского'], houseType: 'range', range: [1, 24], notes: 'Дома с 1 по 24' },
-      { streetName: 'улица Большая Троицкая', aliases: ['ул. Большая Троицкая', 'Большая Троицкая'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Малая Троицкая', aliases: ['ул. Малая Троицкая', 'Малая Троицкая'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Доминиканская', aliases: ['ул. Доминиканская', 'Доминиканская'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-2",
+    "number": 2,
+    "name": "Центральный избирательный округ № 2",
+    "shortName": "Округ №2 (Центральный)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-2",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-3',
-    number: 3,
-    name: 'Доваторский избирательный округ №3',
-    shortName: 'Округ №3 (Доваторский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#0284c7',
-    strokeColor: '#0369a1',
-    votersCount: 12450,
-    populationEst: 16800,
-    center: [53.691341, 23.833418],
-    polygonCoordinates: [],
-    deputyId: 'deputy-3',
-    keyObjects: ['Приемная по ул. Островского, 22', 'Учреждение по ул. Пушкина, 40', 'Кардиологический центр'],
-    description: 'Район улиц Островского, Пушкина, Доватора, Дзержинского.',
-    streets: [
-      { streetName: 'улица Островского', aliases: ['ул. Островского', 'Островского'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Пушкина', aliases: ['ул. Пушкина', 'Пушкина'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Доватора', aliases: ['ул. Доватора', 'Доватора'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'переулок Доватора', aliases: ['пер. Доватора', 'Доватора пер'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-3",
+    "number": 3,
+    "name": "Доваторский избирательный округ № 3",
+    "shortName": "Округ №3 (Доваторский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-3",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-4',
-    number: 4,
-    name: 'Курчатовский избирательный округ №4',
-    shortName: 'Округ №4 (Курчатовский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#0d9488',
-    strokeColor: '#0f766e',
-    votersCount: 12800,
-    populationEst: 16500,
-    center: [53.707686, 23.830553],
-    polygonCoordinates: [],
-    deputyId: 'deputy-4',
-    keyObjects: ['Приемный пункт по ул. Курчатова, 1', 'Здание по ул. Дзержинского, 113а'],
-    description: 'Северная часть Ленинского района вдоль улиц Курчатова и Дзержинского.',
-    streets: [
-      { streetName: 'улица Курчатова', aliases: ['ул. Курчатова', 'Курчатова'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Дзержинского', aliases: ['ул. Дзержинского', 'Дзержинского'], houseType: 'range', range: [80, 150], notes: 'Дома с 80 по 150' },
-      { streetName: 'улица Тавлая', aliases: ['ул. Тавлая', 'Тавлая'], houseType: 'range', range: [1, 40], notes: 'Дома с 1 по 40' },
+    "id": "district-4",
+    "number": 4,
+    "name": "Аграрный избирательный округ № 4",
+    "shortName": "Округ №4 (Аграрный)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-4",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-5',
-    number: 5,
-    name: 'Болдинский избирательный округ №5',
-    shortName: 'Округ №5 (Болдинский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#059669',
-    strokeColor: '#047857',
-    votersCount: 13100,
-    populationEst: 17400,
-    center: [53.693895, 23.828046],
-    polygonCoordinates: [],
-    deputyId: 'deputy-5',
-    keyObjects: ['Приемная депутата по ул. Доватора, 23', 'Общественный пункт по ул. Болдина, 10б', 'Стадион «Неман»'],
-    description: 'Массив между улицами Болдина, Доватора и бульваром Ленинского Комсомола.',
-    streets: [
-      { streetName: 'улица Болдина', aliases: ['ул. Болдина', 'Болдина'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'бульвар Ленинского Комсомола', aliases: ['БЛК', 'бульвар Ленинского Комсомола', 'б-р Ленинского Комсомола'], houseType: 'range', range: [1, 35], notes: 'Дома с 1 по 35' },
+    "id": "district-5",
+    "number": 5,
+    "name": "Строительный избирательный округ № 5",
+    "shortName": "Округ №5 (Строительный)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-5",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-6',
-    number: 6,
-    name: 'Горьковский избирательный округ №6',
-    shortName: 'Округ №6 (Горьковский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#16a34a',
-    strokeColor: '#15803d',
-    votersCount: 13400,
-    populationEst: 17800,
-    center: [53.703923, 23.816063],
-    polygonCoordinates: [],
-    deputyId: 'deputy-6',
-    keyObjects: ['Здание по ул. Горького, 86', 'Школа по ул. Врублевского, 92', 'ТЦ «Корона»'],
-    description: 'Жилой и торговый массив по улице Максима Горького и Врублевского.',
-    streets: [
-      { streetName: 'улица Максима Горького', aliases: ['ул. Горького', 'Горького', 'Максима Горького'], houseType: 'range', range: [70, 110], notes: 'Дома с 70 по 110' },
-      { streetName: 'улица Врублевского', aliases: ['ул. Врублевского', 'Врублевского'], houseType: 'range', range: [50, 100], notes: 'Дома с 50 по 100' },
+    "id": "district-6",
+    "number": 6,
+    "name": "Комаровский избирательный округ № 6",
+    "shortName": "Округ №6 (Комаровский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-6",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-7',
-    number: 7,
-    name: 'Университетский избирательный округ №7',
-    shortName: 'Округ №7 (Университетский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#65a30d',
-    strokeColor: '#4d7c0f',
-    votersCount: 12200,
-    populationEst: 16000,
-    center: [53.683338, 23.836167],
-    polygonCoordinates: [],
-    deputyId: 'deputy-7',
-    keyObjects: ['Приемная по ул. Ожешко, 9', 'Корпус по ул. Курчатова, 7', 'ГрГУ им. Янки Купалы'],
-    description: 'Университетский и культурный район города.',
-    streets: [
-      { streetName: 'улица Ленина', aliases: ['ул. Ленина', 'Ленина'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Будённого', aliases: ['ул. Буденного', 'Буденного', 'Будённого'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Карла Маркса', aliases: ['ул. Карла Маркса', 'Карла Маркса'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-7",
+    "number": 7,
+    "name": "Горьковский избирательный округ № 7",
+    "shortName": "Округ №7 (Горьковский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-7",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-8',
-    number: 8,
-    name: 'Северный избирательный округ №8',
-    shortName: 'Округ №8 (Северный)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#ca8a04',
-    strokeColor: '#a16207',
-    votersCount: 13000,
-    populationEst: 17200,
-    center: [53.701934, 23.816737],
-    polygonCoordinates: [],
-    deputyId: 'deputy-8',
-    keyObjects: ['Приемный пункт по ул. Горького, 82'],
-    description: 'Жилой квартал по четной стороне улицы Максима Горького.',
-    streets: [
-      { streetName: 'улица Максима Горького', aliases: ['ул. Горького', 'Горького', 'Максима Горького'], houseType: 'range', range: [60, 90], notes: 'Дома с 60 по 90' },
-      { streetName: 'улица Комарова', aliases: ['ул. Комарова', 'Комарова'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Серафимовича', aliases: ['ул. Серафимовича', 'Серафимовича'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-8",
+    "number": 8,
+    "name": "Домбровский избирательный округ № 8",
+    "shortName": "Округ №8 (Домбровский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-8",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-9',
-    number: 9,
-    name: 'Девятовский избирательный округ №9',
-    shortName: 'Округ №9 (Девятовский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#d97706',
-    strokeColor: '#b45309',
-    votersCount: 14500,
-    populationEst: 19500,
-    center: [53.712994, 23.846022],
-    polygonCoordinates: [],
-    deputyId: 'deputy-9',
-    keyObjects: ['Приемная по ул. Лиможа, 46', 'Учреждение по БЛК, 57'],
-    description: 'Крупный спальный массив Девятовка (ул. Лиможа, Белые Росы, БЛК).',
-    streets: [
-      { streetName: 'улица Лиможа', aliases: ['ул. Лиможа', 'Лиможа'], houseType: 'range', range: [35, 60], notes: 'Дома с 35 по 60' },
-      { streetName: 'улица Белые Росы', aliases: ['ул. Белые Росы', 'Белые Росы'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'бульвар Ленинского Комсомола', aliases: ['БЛК', 'бульвар Ленинского Комсомола'], houseType: 'range', range: [40, 60], notes: 'Дома с 40 по 60' },
+    "id": "district-9",
+    "number": 9,
+    "name": "Промышленный избирательный округ № 9",
+    "shortName": "Округ №9 (Промышленный)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-9",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-10',
-    number: 10,
-    name: 'Брикелевский избирательный округ №10',
-    shortName: 'Округ №10 (Брикелевский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#ea580c',
-    strokeColor: '#c2410c',
-    votersCount: 13800,
-    populationEst: 18400,
-    center: [53.704250, 23.840650],
-    polygonCoordinates: [],
-    deputyId: 'deputy-10',
-    keyObjects: ['Приемный пункт по ул. Дзержинского, 96', 'Приемная по ул. Брикеля, 25/1'],
-    description: 'Район пересечения улиц Брикеля, Дзержинского и Дубко (ТЦ OldCity).',
-    streets: [
-      { streetName: 'улица Брикеля', aliases: ['ул. Брикеля', 'Брикеля'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Дзержинского', aliases: ['ул. Дзержинского', 'Дзержинского'], houseType: 'range', range: [50, 100], notes: 'Дома с 50 по 100' },
-      { streetName: 'улица Дубко', aliases: ['ул. Дубко', 'Дубко'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-10",
+    "number": 10,
+    "name": "Брикельский избирательный округ № 10",
+    "shortName": "Округ №10 (Брикельский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-10",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-11',
-    number: 11,
-    name: 'Грандичский избирательный округ №11',
-    shortName: 'Округ №11 (Грандичский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#dc2626',
-    strokeColor: '#b91c1c',
-    votersCount: 15200,
-    populationEst: 20500,
-    center: [53.722223, 23.875900],
-    polygonCoordinates: [],
-    deputyId: 'deputy-11',
-    keyObjects: ['Школа по ул. Виктора Глухова, 16', 'Приемный пункт по ул. Лиможа, 25'],
-    description: 'Новый быстрорастущий микрорайон Грандичи и северная Девятовка.',
-    streets: [
-      { streetName: 'улица Виктора Глухова', aliases: ['ул. Глухова', 'Глухова', 'Виктора Глухова'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Лиможа', aliases: ['ул. Лиможа', 'Лиможа'], houseType: 'range', range: [15, 34], notes: 'Дома с 15 по 34' },
-      { streetName: 'улица Асфальтная', aliases: ['ул. Асфальтная', 'Асфальтная'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Саяпина', aliases: ['ул. Саяпина', 'Саяпина'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-11",
+    "number": 11,
+    "name": "Грандичский избирательный округ № 11",
+    "shortName": "Округ №11 (Грандичский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-11",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-12',
-    number: 12,
-    name: 'Красноармейский избирательный округ №12',
-    shortName: 'Округ №12 (Красноармейский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#e11d48',
-    strokeColor: '#be123c',
-    votersCount: 13200,
-    populationEst: 17500,
-    center: [53.703971, 23.852319],
-    polygonCoordinates: [],
-    deputyId: 'deputy-12',
-    keyObjects: ['Приемная по ул. Лиможа, 11', 'Здание по ул. Красноармейская, 3'],
-    description: 'Район начала ул. Лиможа, ул. Красноармейская и привокзальный массив.',
-    streets: [
-      { streetName: 'улица Лиможа', aliases: ['ул. Лиможа', 'Лиможа'], houseType: 'range', range: [1, 14], notes: 'Дома с 1 по 14' },
-      { streetName: 'улица Красноармейская', aliases: ['ул. Красноармейская', 'Красноармейская'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Ожешко', aliases: ['ул. Ожешко', 'Ожешко'], houseType: 'range', range: [30, 60], notes: 'Привокзальная часть' },
+    "id": "district-12",
+    "number": 12,
+    "name": "Восточный избирательный округ № 12",
+    "shortName": "Округ №12 (Восточный)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-12",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-13',
-    number: 13,
-    name: 'Занеманский избирательный округ №13',
-    shortName: 'Округ №13 (Занеманский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#c026d3',
-    strokeColor: '#a21caf',
-    votersCount: 13600,
-    populationEst: 18000,
-    center: [53.659637, 23.834083],
-    polygonCoordinates: [],
-    deputyId: 'deputy-13',
-    keyObjects: ['Приемная депутата по ул. Победы, 16', 'ТРК «Triniti» (северная зона)'],
-    description: 'Левобережная часть Октябрьского района по ул. Победы и пр-ту Янки Купалы.',
-    streets: [
-      { streetName: 'улица Победы', aliases: ['ул. Победы', 'Победы'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'проспект Янки Купалы', aliases: ['пр-т Янки Купалы', 'Янки Купалы'], houseType: 'range', range: [1, 35], notes: 'Дома с 1 по 35' },
+    "id": "district-13",
+    "number": 13,
+    "name": "Девятовский избирательный округ № 13",
+    "shortName": "Округ №13 (Девятовский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-13",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-14',
-    number: 14,
-    name: 'Транспортный избирательный округ №14',
-    shortName: 'Округ №14 (Транспортный)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#9333ea',
-    strokeColor: '#7e22ce',
-    votersCount: 12900,
-    populationEst: 16900,
-    center: [53.670473, 23.822360],
-    polygonCoordinates: [],
-    deputyId: 'deputy-14',
-    keyObjects: ['Приемная депутата по ул. Транспортная, 3', 'Станция Гродно-Южный'],
-    description: 'Район ул. Транспортная, Суворова (начало), Горновых.',
-    streets: [
-      { streetName: 'улица Транспортная', aliases: ['ул. Транспортная', 'Транспортная'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Горновых', aliases: ['ул. Горновых', 'Горновых'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Суворова', aliases: ['ул. Суворова', 'Суворова'], houseType: 'range', range: [1, 40], notes: 'Дома с 1 по 40' },
+    "id": "district-14",
+    "number": 14,
+    "name": "Гагаринский избирательный округ № 14",
+    "shortName": "Округ №14 (Гагаринский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-14",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-15',
-    number: 15,
-    name: 'Пограничный избирательный округ №15',
-    shortName: 'Округ №15 (Пограничный)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#7c3aed',
-    strokeColor: '#6d28d9',
-    votersCount: 14100,
-    populationEst: 18700,
-    center: [53.673716, 23.797180],
-    polygonCoordinates: [],
-    deputyId: 'deputy-15',
-    keyObjects: ['Приемная по ул. Советских Пограничников, 115', 'Кинотеатр «Октябрь»'],
-    description: 'Магистральный сектор по ул. Советских Пограничников и ул. Поповича.',
-    streets: [
-      { streetName: 'улица Советских Пограничников', aliases: ['ул. Советских Пограничников', 'Советских Пограничников'], houseType: 'range', range: [80, 150], notes: 'Дома с 80 по 150' },
-      { streetName: 'улица Поповича', aliases: ['ул. Поповича', 'Поповича'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'переулок Поповича', aliases: ['пер. Поповича', 'Поповича пер'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-15",
+    "number": 15,
+    "name": "Студенческий избирательный округ № 15",
+    "shortName": "Округ №15 (Студенческий)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-15",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-16',
-    number: 16,
-    name: 'Репинский избирательный округ №16',
-    shortName: 'Округ №16 (Репинский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#4f46e5',
-    strokeColor: '#4338ca',
-    votersCount: 13900,
-    populationEst: 18300,
-    center: [53.662305, 23.791054],
-    polygonCoordinates: [],
-    deputyId: 'deputy-16',
-    keyObjects: ['Здание Горисполкома (пл. Ленина, 2/1)', 'Приемный пункт по ул. Репина, 9а'],
-    description: 'Район улиц Репина, Лизы Чайкиной и Фолюш.',
-    streets: [
-      { streetName: 'улица Репина', aliases: ['ул. Репина', 'Репина'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Лизы Чайкиной', aliases: ['ул. Чайкиной', 'Чайкиной', 'Лизы Чайкиной'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Фолюш', aliases: ['ул. Фолюш', 'Фолюш'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-16",
+    "number": 16,
+    "name": "Фолюшский избирательный округ № 16",
+    "shortName": "Округ №16 (Фолюшский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-16",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-17',
-    number: 17,
-    name: 'Соломовский избирательный округ №17',
-    shortName: 'Округ №17 (Соломовский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#2563eb',
-    strokeColor: '#1d4ed8',
-    votersCount: 14800,
-    populationEst: 19600,
-    center: [53.654434, 23.782286],
-    polygonCoordinates: [],
-    deputyId: 'deputy-17',
-    keyObjects: ['Приемная депутата по ул. Соломовой, 128А'],
-    description: 'Густонаселенный жилой массив по улице Ольги Соломовой.',
-    streets: [
-      { streetName: 'улица Ольги Соломовой', aliases: ['ул. Соломовой', 'Соломовой', 'Ольги Соломовой'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Хвойная', aliases: ['ул. Хвойная', 'Хвойная'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-17",
+    "number": 17,
+    "name": "Парковый избирательный округ № 17",
+    "shortName": "Округ №17 (Парковый)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-17",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-18',
-    number: 18,
-    name: 'Комсомольский избирательный округ №18',
-    shortName: 'Округ №18 (Комсомольский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#0891b2',
-    strokeColor: '#0e7490',
-    votersCount: 13300,
-    populationEst: 17600,
-    center: [53.701311, 23.813781],
-    polygonCoordinates: [],
-    deputyId: 'deputy-18',
-    keyObjects: ['Приемный пункт по БЛК, 17', 'Областная клиническая больница'],
-    description: 'Медицинский городок и жилой комплекс вдоль БЛК.',
-    streets: [
-      { streetName: 'бульвар Ленинского Комсомола', aliases: ['БЛК', 'бульвар Ленинского Комсомола'], houseType: 'range', range: [15, 39], notes: 'Дома с 15 по 39' },
-      { streetName: 'улица Врублевского', aliases: ['ул. Врублевского', 'Врублевского'], houseType: 'range', range: [1, 49], notes: 'Дома с 1 по 49' },
+    "id": "district-18",
+    "number": 18,
+    "name": "Гимназический избирательный округ № 18",
+    "shortName": "Округ №18 (Гимназический)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-18",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-19',
-    number: 19,
-    name: 'Томинский избирательный округ №19',
-    shortName: 'Округ №19 (Томинский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#059669',
-    strokeColor: '#047857',
-    votersCount: 13700,
-    populationEst: 18100,
-    center: [53.649119, 23.826708],
-    polygonCoordinates: [],
-    deputyId: 'deputy-19',
-    keyObjects: ['Приемная депутата по ул. Томина, 28', 'Гродненский государственный колледж'],
-    description: 'Массив улиц Томина, Славинского и Победы (юг).',
-    streets: [
-      { streetName: 'улица Томина', aliases: ['ул. Томина', 'Томина'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Славинского', aliases: ['ул. Славинского', 'Славинского'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-19",
+    "number": 19,
+    "name": "Политехнический избирательный округ № 19",
+    "shortName": "Округ №19 (Политехнический)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-19",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-20',
-    number: 20,
-    name: 'Ольшанский-Западный избирательный округ №20',
-    shortName: 'Округ №20 (Ольшанка-Запад)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#16a34a',
-    strokeColor: '#15803d',
-    votersCount: 15800,
-    populationEst: 22000,
-    center: [53.621234, 23.814563],
-    polygonCoordinates: [],
-    deputyId: 'deputy-20',
-    keyObjects: ['Школа и приемный пункт по ул. Наполеона Орды, 5'],
-    description: 'Западный сектор микрорайона Ольшанка (ул. Наполеона Орды, Франтишка Богушевича).',
-    streets: [
-      { streetName: 'улица Наполеона Орды', aliases: ['ул. Наполеона Орды', 'Наполеона Орды', 'Орды'], houseType: 'range', range: [1, 30], notes: 'Дома с 1 по 30' },
-      { streetName: 'улица Франтишка Богушевича', aliases: ['ул. Богушевича', 'Богушевича'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-20",
+    "number": 20,
+    "name": "Фабричный избирательный округ № 20",
+    "shortName": "Округ №20 (Фабричный)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-20",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-21',
-    number: 21,
-    name: 'Ольшанский-Восточный избирательный округ №21',
-    shortName: 'Округ №21 (Ольшанка-Восток)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#65a30d',
-    strokeColor: '#4d7c0f',
-    votersCount: 15900,
-    populationEst: 22500,
-    center: [53.621234, 23.814563],
-    polygonCoordinates: [],
-    deputyId: 'deputy-21',
-    keyObjects: ['Школа и приемная по ул. Наполеона Орды, 5'],
-    description: 'Восточный сектор микрорайона Ольшанка (ул. Короткевича, Огинского).',
-    streets: [
-      { streetName: 'улица Огинского', aliases: ['ул. Огинского', 'Огинского'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Короткевича', aliases: ['ул. Короткевича', 'Короткевича'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Наполеона Орды', aliases: ['ул. Наполеона Орды', 'Наполеона Орды', 'Орды'], houseType: 'range', range: [31, 80], notes: 'Дома с 31 по 80' },
+    "id": "district-21",
+    "number": 21,
+    "name": "Огинский избирательный округ № 21",
+    "shortName": "Округ №21 (Огинский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-21",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-22',
-    number: 22,
-    name: 'Кремковский избирательный округ №22',
-    shortName: 'Округ №22 (Кремковский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#ca8a04',
-    strokeColor: '#a16207',
-    votersCount: 14200,
-    populationEst: 18900,
-    center: [53.636617, 23.861491],
-    polygonCoordinates: [],
-    deputyId: 'deputy-22',
-    keyObjects: ['Приемная депутата по ул. Кремко, 29'],
-    description: 'Микрорайон Вишневец и Южный по ул. Кремко и Южная.',
-    streets: [
-      { streetName: 'улица Кремко', aliases: ['ул. Кремко', 'Кремко'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Южная', aliases: ['ул. Южная', 'Южная'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Стрелковая', aliases: ['ул. Стрелковая', 'Стрелковая'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-22",
+    "number": 22,
+    "name": "Соломенковский избирательный округ № 22",
+    "shortName": "Округ №22 (Соломенковский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-22",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-23',
-    number: 23,
-    name: 'Кабякский избирательный округ №23',
-    shortName: 'Округ №23 (Кабякский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#d97706',
-    strokeColor: '#b45309',
-    votersCount: 14600,
-    populationEst: 19400,
-    center: [53.641908, 23.844719],
-    polygonCoordinates: [],
-    deputyId: 'deputy-23',
-    keyObjects: ['Приемный пункт по ул. Кабяка, 2а', 'Приемная по ул. Ожешко, 1'],
-    description: 'Массив улицы Кабяка и проспекта Янки Купалы.',
-    streets: [
-      { streetName: 'улица Кабяка', aliases: ['ул. Кабяка', 'Кабяка'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'проспект Янки Купалы', aliases: ['пр-т Янки Купалы', 'Янки Купалы'], houseType: 'range', range: [36, 75], notes: 'Дома с 36 по 75' },
+    "id": "district-23",
+    "number": 23,
+    "name": "Учительский избирательный округ № 23",
+    "shortName": "Округ №23 (Учительский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-23",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-24',
-    number: 24,
-    name: 'Вишневецкий избирательный округ №24',
-    shortName: 'Округ №24 (Вишневецкий)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#ea580c',
-    strokeColor: '#c2410c',
-    votersCount: 14400,
-    populationEst: 19100,
-    center: [53.641892, 23.853092],
-    polygonCoordinates: [],
-    deputyId: 'deputy-24',
-    keyObjects: ['Приемная по ул. Советская, 4', 'Школа по ул. Вишневецкая, 14'],
-    description: 'Спальный микрорайон Вишневец вдоль ул. Вишневецкая.',
-    streets: [
-      { streetName: 'улица Вишневецкая', aliases: ['ул. Вишневецкая', 'Вишневецкая'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Химиков', aliases: ['ул. Химиков', 'Химиков'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-24",
+    "number": 24,
+    "name": "Ученический избирательный округ № 24",
+    "shortName": "Округ №24 (Ученический)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-24",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-25',
-    number: 25,
-    name: 'Скидельский избирательный округ №25',
-    shortName: 'Округ №25 (Скидельский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#dc2626',
-    strokeColor: '#b91c1c',
-    votersCount: 13500,
-    populationEst: 17800,
-    center: [53.663970, 23.941701],
-    polygonCoordinates: [],
-    deputyId: 'deputy-25',
-    keyObjects: ['Пункт по ул. Кабяка, 2а', 'Филиал по Скидельскому шоссе, 18'],
-    description: 'Восточный сектор города вдоль Скидельского шоссе.',
-    streets: [
-      { streetName: 'Скидельское шоссе', aliases: ['Скидельское шоссе', 'Скидельское ш.'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Аульс', aliases: ['ул. Аульс', 'Аульс'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-25",
+    "number": 25,
+    "name": "Индурский избирательный округ № 25",
+    "shortName": "Округ №25 (Индурский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-25",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-26',
-    number: 26,
-    name: 'Индурский избирательный округ №26',
-    shortName: 'Округ №26 (Индурский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#e11d48',
-    strokeColor: '#be123c',
-    votersCount: 14000,
-    populationEst: 18600,
-    center: [53.645420, 23.843713],
-    polygonCoordinates: [],
-    deputyId: 'deputy-26',
-    keyObjects: ['Приемная депутата по Индурскому шоссе, 14', 'Рынок «Южный»'],
-    description: 'Район Индурского шоссе и проспекта Клецкова.',
-    streets: [
-      { streetName: 'Индурское шоссе', aliases: ['Индурское шоссе', 'Индурское ш.'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'проспект Клецкова', aliases: ['пр-т Клецкова', 'Клецкова'], houseType: 'range', range: [1, 25], notes: 'Дома с 1 по 25' },
+    "id": "district-26",
+    "number": 26,
+    "name": "Спортивный избирательный округ № 26",
+    "shortName": "Округ №26 (Спортивный)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-26",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-27',
-    number: 27,
-    name: 'Пестраковский избирательный округ №27',
-    shortName: 'Округ №27 (Пестраковский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#c026d3',
-    strokeColor: '#a21caf',
-    votersCount: 13900,
-    populationEst: 18400,
-    center: [53.653506, 23.839266],
-    polygonCoordinates: [],
-    deputyId: 'deputy-27',
-    keyObjects: ['Школа по ул. Пестрака, 34/1', 'Здание по ул. Орджоникидзе, 18'],
-    description: 'Район улиц Пестрака, Орджоникидзе и Румлёвского парка.',
-    streets: [
-      { streetName: 'улица Пестрака', aliases: ['ул. Пестрака', 'Пестрака'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'переулок Пестрака', aliases: ['пер. Пестрака', 'Пестрака пер'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Орджоникидзе', aliases: ['ул. Орджоникидзе', 'Орджоникидзе'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-27",
+    "number": 27,
+    "name": "Пестраковский избирательный округ № 27",
+    "shortName": "Округ №27 (Пестраковский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-27",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-28',
-    number: 28,
-    name: 'Фомичевский избирательный округ №28',
-    shortName: 'Округ №28 (Фомичевский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#9333ea',
-    strokeColor: '#7e22ce',
-    votersCount: 13300,
-    populationEst: 17700,
-    center: [53.704189, 23.807789],
-    polygonCoordinates: [],
-    deputyId: 'deputy-28',
-    keyObjects: ['Приемный пункт по ул. Врублевского, 33', 'Приемная по ул. Фомичева, 16'],
-    description: 'Массив улиц Врублевского и Фомичева.',
-    streets: [
-      { streetName: 'улица Врублевского', aliases: ['ул. Врублевского', 'Врублевского'], houseType: 'range', range: [20, 60], notes: 'Дома с 20 по 60' },
-      { streetName: 'улица Фомичева', aliases: ['ул. Фомичева', 'Фомичева'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-28",
+    "number": 28,
+    "name": "Музыкальный избирательный округ № 28",
+    "shortName": "Округ №28 (Музыкальный)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-28",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-29',
-    number: 29,
-    name: 'Белушский избирательный округ №29',
-    shortName: 'Округ №29 (Белушский)',
-    level: 'city',
-    districtAdministration: 'Октябрьский район',
-    color: '#7c3aed',
-    strokeColor: '#6d28d9',
-    votersCount: 13100,
-    populationEst: 17300,
-    center: [53.672799, 23.848097],
-    polygonCoordinates: [],
-    deputyId: 'deputy-29',
-    keyObjects: ['Приемная по ул. Белуша, 18', 'Общественный пункт по ул. Гаспадарчая, 28'],
-    description: 'Восточный въезд в город, район улиц Белуша, Лидская, Понемунь.',
-    streets: [
-      { streetName: 'улица Белуша', aliases: ['ул. Белуша', 'Белуша'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Лидская', aliases: ['ул. Лидская', 'Лидская'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'улица Гаспадарчая', aliases: ['ул. Гаспадарчая', 'Гаспадарчая', 'Господарчая'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-29",
+    "number": 29,
+    "name": "Лидский избирательный округ № 29",
+    "shortName": "Округ №29 (Лидский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-29",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
   {
-    id: 'district-31',
-    number: 31,
-    name: 'Азотовский избирательный округ №31',
-    shortName: 'Округ №31 (Азотовский)',
-    level: 'city',
-    districtAdministration: 'Ленинский район',
-    color: '#2563eb',
-    strokeColor: '#1d4ed8',
-    votersCount: 14900,
-    populationEst: 19800,
-    center: [53.690307, 23.878208],
-    polygonCoordinates: [],
-    deputyId: 'deputy-31',
-    keyObjects: ['Приемная депутата по ул. Карского, 2', 'ОАО «Гродно Азот»'],
-    description: 'Промышленный узел города и прилегающий жилой сектор по ул. Карского, пр-ту Космонавтов.',
-    streets: [
-      { streetName: 'улица Карского', aliases: ['ул. Карского', 'Карского'], houseType: 'all', notes: 'Все дома' },
-      { streetName: 'проспект Космонавтов', aliases: ['пр-т Космонавтов', 'Космонавтов'], houseType: 'all', notes: 'Все дома' },
+    "id": "district-30",
+    "number": 30,
+    "name": "Захаровский избирательный округ № 30",
+    "shortName": "Округ №30 (Захаровский)",
+    "level": "city",
+    "districtAdministration": "Октябрьский район",
+    "color": "#3b82f6",
+    "strokeColor": "#2563eb",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
     ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-30",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
   },
+  {
+    "id": "district-31",
+    "number": 31,
+    "name": "Озёрский избирательный округ № 31",
+    "shortName": "Округ №31 (Озёрский)",
+    "level": "city",
+    "districtAdministration": "Ленинский район",
+    "color": "#8b5cf6",
+    "strokeColor": "#7c3aed",
+    "votersCount": 15000,
+    "populationEst": 20000,
+    "center": [
+      53.68,
+      23.83
+    ],
+    "polygonCoordinates": [],
+    "deputyId": "deputy-31",
+    "description": "Описание округа...",
+    "keyObjects": [],
+    "streets": [
+      {
+        "streetName": "ул. Советская",
+        "aliases": [
+          "Советская"
+        ],
+        "houseType": "all",
+        "notes": "Все дома"
+      }
+    ]
+  }
 ];

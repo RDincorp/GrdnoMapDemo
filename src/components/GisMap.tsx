@@ -64,10 +64,7 @@ export const GisMap: React.FC<GisMapProps> = ({
       await window.ymaps3.ready;
       if (isCancelled) return;
 
-      const { YMap } = window.ymaps3;
-      
-      // Load default UI theme for scheme and features layers
-      const { YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } = await window.ymaps3.import('@yandex/ymaps3-default-ui-theme');
+      const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } = window.ymaps3;
       
       ymapsApiRef.current = window.ymaps3;
 
