@@ -11,7 +11,6 @@ import {
   MapPin,
   Calendar,
   Phone,
-  Mail,
   Building2,
   FileText,
   HelpCircle,
@@ -24,7 +23,6 @@ import {
   Search,
   BookOpen,
   ArrowUpRight,
-  AlertCircle,
   Flag,
 } from 'lucide-react';
 import { CITIZEN_PROBLEM_ROUTES } from '../data/mockData';
@@ -64,6 +62,8 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
 
   // If an institution was directly selected from map/search
   if (institution && !district) {
+    const isParty = institution.type === 'party';
+
     return (
       <div className="h-full flex flex-col bg-white overflow-y-auto">
         {/* Header */}
@@ -81,91 +81,106 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
             <MapPin className="w-3.5 h-3.5 text-indigo-400 shrink-0" />
             <span>{institution.address}</span>
           </p>
-        </div>
-
-        {/* Content */}
-        <div className="p-6 space-y-6 flex-1">
-          {/* Key details */}
-          <div className="grid grid-cols-1 gap-3">
-            {(institution.headName || institution.headPosition) && (
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
-                <div className="text-xs text-slate-500 font-medium">Руководитель</div>
-                {institution.headName && <div className="text-sm font-bold text-slate-900 mt-0.5">{institution.headName}</div>}
-                {institution.headPosition && <div className="text-xs text-slate-600">{institution.headPosition}</div>}
-              </div>
-            )}
-
-            {(institution.workSchedule || institution.receptionHours || institution.hotline) && (
-              <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
-                {institution.workSchedule && (
-                  <div className="flex items-center gap-2 text-xs text-slate-700">
-                    <Clock className="w-4 h-4 text-blue-600 shrink-0" />
-                    <span>
-                      <strong>Режим работы:</strong> {institution.workSchedule}
-                    </span>
-                  </div>
-                )}
-                {institution.receptionHours && (
-                  <div className="flex items-center gap-2 text-xs text-slate-700">
-                    <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
-                    <span>
-                      <strong>Личный прием:</strong> {institution.receptionHours}
-                    </span>
-                  </div>
-                )}
-                {institution.hotline && (
-                  <div className="flex items-center gap-2 text-xs text-slate-700">
-                    <Phone className="w-4 h-4 text-amber-600 shrink-0" />
-                    <span>
-                      <strong>Горячая линия:</strong> {institution.hotline}
-                    </span>
-                  </div>
-                )}
-              </div>
-            )}
-          </div>
-
-          {/* Competencies */}
-          {institution.competencies && institution.competencies.length > 0 && (
-            <div>
-              <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
-                Сфера компетенций и вопросов
-              </h3>
-              <ul className="space-y-2">
-                {institution.competencies.map((comp, idx) => (
-                  <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700">
-                    <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
-                    <span>{comp}</span>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          )}
-
-          {/* Actions */}
-          <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
-            {institution.siteUrl && (
+          {isParty && institution.siteUrl && (
+            <div className="mt-4 pt-3 border-t border-indigo-900/40">
               <a
                 href={institution.siteUrl}
                 target="_blank"
                 rel="noreferrer"
-                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition"
+                className="inline-flex items-center gap-1.5 px-3 py-1.5 rounded-lg bg-indigo-600/80 hover:bg-indigo-600 text-white text-xs font-medium transition"
               >
-                <span>Сайт учреждения</span>
-                <ArrowUpRight className="w-4 h-4" />
+                <span>Официальный сайт партии</span>
+                <ArrowUpRight className="w-3.5 h-3.5" />
               </a>
-            )}
-            {institution.phone && (
-              <a
-                href={`tel:${institution.phone.replace(/[^0-9+]/g, '')}`}
-                className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition"
-              >
-                <Phone className="w-4 h-4" />
-                <span>Позвонить ({institution.phone})</span>
-              </a>
-            )}
-          </div>
+            </div>
+          )}
         </div>
+
+        {/* Content */}
+        {!isParty && (
+          <div className="p-6 space-y-6 flex-1">
+            {/* Key details */}
+            <div className="grid grid-cols-1 gap-3">
+              {(institution.headName || institution.headPosition) && (
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200">
+                  <div className="text-xs text-slate-500 font-medium">Руководитель</div>
+                  {institution.headName && <div className="text-sm font-bold text-slate-900 mt-0.5">{institution.headName}</div>}
+                  {institution.headPosition && <div className="text-xs text-slate-600">{institution.headPosition}</div>}
+                </div>
+              )}
+
+              {(institution.workSchedule || institution.receptionHours || institution.hotline) && (
+                <div className="p-4 rounded-xl bg-slate-50 border border-slate-200 space-y-2">
+                  {institution.workSchedule && (
+                    <div className="flex items-center gap-2 text-xs text-slate-700">
+                      <Clock className="w-4 h-4 text-blue-600 shrink-0" />
+                      <span>
+                        <strong>Режим работы:</strong> {institution.workSchedule}
+                      </span>
+                    </div>
+                  )}
+                  {institution.receptionHours && (
+                    <div className="flex items-center gap-2 text-xs text-slate-700">
+                      <Calendar className="w-4 h-4 text-emerald-600 shrink-0" />
+                      <span>
+                        <strong>Личный прием:</strong> {institution.receptionHours}
+                      </span>
+                    </div>
+                  )}
+                  {institution.hotline && (
+                    <div className="flex items-center gap-2 text-xs text-slate-700">
+                      <Phone className="w-4 h-4 text-amber-600 shrink-0" />
+                      <span>
+                        <strong>Горячая линия:</strong> {institution.hotline}
+                      </span>
+                    </div>
+                  )}
+                </div>
+              )}
+            </div>
+
+            {/* Competencies */}
+            {institution.competencies && institution.competencies.length > 0 && (
+              <div>
+                <h3 className="text-xs font-bold uppercase tracking-wider text-slate-500 mb-3">
+                  Сфера компетенций и вопросов
+                </h3>
+                <ul className="space-y-2">
+                  {institution.competencies.map((comp, idx) => (
+                    <li key={idx} className="flex items-start gap-2.5 text-xs text-slate-700">
+                      <CheckCircle2 className="w-4 h-4 text-blue-600 shrink-0 mt-0.5" />
+                      <span>{comp}</span>
+                    </li>
+                  ))}
+                </ul>
+              </div>
+            )}
+
+            {/* Actions */}
+            <div className="pt-4 border-t border-slate-100 flex flex-col gap-2">
+              {institution.siteUrl && (
+                <a
+                  href={institution.siteUrl}
+                  target="_blank"
+                  rel="noreferrer"
+                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-blue-600 hover:bg-blue-700 text-white text-xs font-semibold transition"
+                >
+                  <span>Сайт учреждения</span>
+                  <ArrowUpRight className="w-4 h-4" />
+                </a>
+              )}
+              {institution.phone && (
+                <a
+                  href={`tel:${institution.phone.replace(/[^0-9+]/g, '')}`}
+                  className="flex items-center justify-center gap-2 w-full py-2.5 px-4 rounded-xl bg-slate-100 hover:bg-slate-200 text-slate-800 text-xs font-semibold transition"
+                >
+                  <Phone className="w-4 h-4" />
+                  <span>Позвонить ({institution.phone})</span>
+                </a>
+              )}
+            </div>
+          </div>
+        )}
       </div>
     );
   }
@@ -314,66 +329,20 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
               </div>
             </section>
 
-            {/* Reception Quick Preview */}
-            {deputy.receptionSchedules[0] && (
-              <section className="space-y-2">
-                <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                  Прием граждан
-                </h3>
-                <div className="grid grid-cols-2 gap-2">
-                  <div className="p-2 border border-slate-200 rounded bg-slate-50">
-                    <p className="text-[10px] text-slate-500 uppercase font-semibold">День приема</p>
-                    <p className="text-xs font-bold text-slate-900 mt-0.5">
-                      {deputy.receptionSchedules[0].frequency}
-                    </p>
-                  </div>
-                  <div className="p-2 border border-slate-200 rounded bg-slate-50">
-                    <p className="text-[10px] text-slate-500 uppercase font-semibold">Время</p>
-                    <p className="text-xs font-bold text-slate-900 mt-0.5">
-                      {deputy.receptionSchedules[0].time}
-                    </p>
-                  </div>
-                </div>
-
-                <div className="p-3 border border-slate-200 rounded-lg bg-white">
-                  <div className="flex gap-2 items-start">
-                    <MapPin className="w-4 h-4 text-blue-600 mt-0.5 shrink-0" />
-                    <div className="text-xs">
-                      <p className="font-bold text-slate-900">Адрес приемной:</p>
-                      <p className="text-slate-600 mt-0.5">
-                        {deputy.receptionSchedules[0].address} ({deputy.receptionSchedules[0].room})
-                      </p>
-                    </div>
-                  </div>
-                </div>
-              </section>
-            )}
-
             {/* Direct Contacts */}
             <section>
               <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
                 Контакты
               </h3>
-              <div className="grid grid-cols-2 gap-2">
+              <div>
                 <a
-                  href={`tel:${deputy.phone.replace(/[^0-9+]/g, '')}`}
+                  href={`tel:${deputy.phone.split(',')[0].replace(/[^0-9+]/g, '')}`}
                   className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 transition text-xs font-semibold text-slate-800"
                 >
                   <Phone className="w-3.5 h-3.5 text-blue-600 shrink-0" />
                   <div className="truncate">
                     <div className="text-[9px] text-slate-400 uppercase font-bold">Приемная</div>
-                    <div className="truncate text-xs">{deputy.phone}</div>
-                  </div>
-                </a>
-
-                <a
-                  href={`mailto:${deputy.email}`}
-                  className="flex items-center gap-2 p-2.5 rounded-lg bg-slate-50 hover:bg-blue-50 border border-slate-200 hover:border-blue-300 transition text-xs font-semibold text-slate-800 truncate"
-                >
-                  <Mail className="w-3.5 h-3.5 text-blue-600 shrink-0" />
-                  <div className="truncate">
-                    <div className="text-[9px] text-slate-400 uppercase font-bold">Email</div>
-                    <div className="truncate text-xs">{deputy.email}</div>
+                    <div className="truncate text-xs" title={deputy.phone}>{deputy.phone}</div>
                   </div>
                 </a>
               </div>
@@ -393,26 +362,6 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
                   </a>
                 </div>
               )}
-            </section>
-
-            {/* Initiatives */}
-            <section>
-              <h3 className="text-[11px] font-bold text-slate-400 uppercase tracking-widest mb-2">
-                Наказы избирателей
-              </h3>
-              <div className="space-y-1.5">
-                {deputy.initiatives.map((init, idx) => (
-                  <div
-                    key={idx}
-                    className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 text-xs text-slate-800 flex items-start gap-2"
-                  >
-                    <span className="w-4 h-4 rounded bg-blue-100 text-blue-700 font-bold flex items-center justify-center text-[10px] shrink-0">
-                      {idx + 1}
-                    </span>
-                    <span className="leading-snug">{init}</span>
-                  </div>
-                ))}
-              </div>
             </section>
           </div>
         )}
@@ -458,7 +407,7 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
                         </div>
                         <div className="text-slate-600 flex items-center gap-1">
                           <MapPin className="w-3.5 h-3.5 text-slate-400 shrink-0" />
-                          <span>{schedule.address}, {schedule.room}</span>
+                          <span>{schedule.address}</span>
                         </div>
                         <div className="text-slate-600 flex items-center gap-1">
                           <Phone className="w-3.5 h-3.5 text-slate-400 shrink-0" />
@@ -476,16 +425,6 @@ export const TerritoryPassport: React.FC<TerritoryPassportProps> = ({
                 })}
               </div>
             </section>
-
-            <div className="p-3 rounded-lg bg-blue-50 border border-blue-200 text-xs text-blue-900">
-              <div className="font-bold flex items-center gap-1 text-[11px] mb-1">
-                <AlertCircle className="w-3.5 h-3.5 text-blue-600" />
-                <span>Регламент приема:</span>
-              </div>
-              <p className="text-[11px] text-blue-800 leading-relaxed">
-                При себе необходимо иметь документ, удостоверяющий личность. Срок рассмотрения обращений — до 15 дней.
-              </p>
-            </div>
           </div>
         )}
 

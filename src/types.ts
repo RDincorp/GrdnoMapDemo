@@ -16,7 +16,7 @@ export interface ReceptionScheduleItem {
   time: string; // "16:00 - 20:00"
   locationName: string; // "ГУО «Гимназия №2 г. Гродно»"
   address: string; // "ул. Болдина, 16"
-  room: string; // "каб. 104"
+  room?: string;
   phone: string; // "+375 (152) 62-11-22"
   appointmentRequired: boolean;
   notes?: string;

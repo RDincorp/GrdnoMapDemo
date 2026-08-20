@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Landmark, Compass, CheckCircle2, Shield, Map, Search, Users, Sparkles } from 'lucide-react';
+import { X, Landmark, Compass, CheckCircle2, Map, Search, Users } from 'lucide-react';
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -51,7 +51,7 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
             <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
               Реализованный функционал:
             </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-2">
+            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
               <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
                 <div className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
                   <Search className="w-3.5 h-3.5 text-blue-600" />
@@ -78,30 +78,10 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
                   <span>Карточки депутатов</span>
                 </div>
                 <p className="text-[10px] text-slate-500 leading-snug">
-                  Графики личного приема, прямые телефоны, комиссии горсовета, наказные инициативы и контакты помощников.
-                </p>
-              </div>
-
-              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
-                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                  <Sparkles className="w-3.5 h-3.5 text-amber-600" />
-                  <span>Навигатор обращений</span>
-                </div>
-                <p className="text-[10px] text-slate-500 leading-snug">
-                  Помогает быстро сориентироваться, с какими вопросами обращаться в администрацию района, горисполком или к депутату.
+                  Графики личного приема, прямые телефоны, комиссии горсовета и контакты помощников.
                 </p>
               </div>
             </div>
-          </div>
-
-          <div className="p-3 rounded-lg bg-slate-100 border border-slate-200 text-slate-800 space-y-0.5 text-xs">
-            <div className="font-bold flex items-center gap-1.5 text-[11px] uppercase tracking-tight text-blue-700">
-              <Shield className="w-3.5 h-3.5 text-blue-600" />
-              <span>Технологический стек прототипа:</span>
-            </div>
-            <p className="text-[10px] text-slate-600 leading-snug">
-              React 19 + TypeScript, Tailwind CSS, Leaflet GIS Engine (с геопространственным алгоритмом Ray-Casting для определения округов по координатам), адаптивный дизайн для мобильных устройств и десктопа.
-            </p>
           </div>
         </div>
 

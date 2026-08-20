@@ -20,31 +20,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-1-1",
         "dayOfWeek": "Вторник",
         "frequency": "2-й вторник месяца",
-        "time": "с 17.30",
+        "time": "17:30 – 19:30",
         "locationName": "Приемная депутата (ул. Сухомбаева, 1)",
         "address": "ул. Сухомбаева, 1",
         "room": "каб. приёма",
         "phone": "8-0152-73-10-73",
         "appointmentRequired": false,
-        "coordinates": [
-          53.694716,
-          23.817186
-        ]
+        "coordinates": [53.694716, 23.817186]
       },
       {
         "id": "rec-1-2",
         "dayOfWeek": "Вторник",
         "frequency": "4-й вторник месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 13:00",
         "locationName": "Приемная депутата (ул. Ожешко, 11)",
         "address": "ул. Ожешко, 11",
         "room": "каб. приёма",
         "phone": "8-0152-73-10-73",
         "appointmentRequired": false,
-        "coordinates": [
-          53.683514,
-          23.836832
-        ]
+        "coordinates": [53.683514, 23.836832]
       }
     ],
     "initiatives": [],
@@ -69,31 +63,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-2-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 11:00",
         "locationName": "Приемная депутата (ул. Виленская, 22)",
         "address": "ул. Виленская, 22",
         "room": "каб. приёма",
         "phone": "8-0152-62-44-00",
         "appointmentRequired": false,
-        "coordinates": [
-          53.684074,
-          23.828127
-        ]
+        "coordinates": [53.684074, 23.828127]
       },
       {
         "id": "rec-2-2",
         "dayOfWeek": "Четверг",
         "frequency": "1-й четверг месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Дзержинского, 8)",
         "address": "ул. Дзержинского, 8",
         "room": "каб. приёма",
         "phone": "8-0152-62-44-00",
         "appointmentRequired": false,
-        "coordinates": [
-          53.686351,
-          23.834631
-        ]
+        "coordinates": [53.686351, 23.834631]
       }
     ],
     "initiatives": [],
@@ -118,31 +106,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-3-1",
         "dayOfWeek": "Вторник",
         "frequency": "2-й вторник месяца",
-        "time": "с 14.00",
+        "time": "14:00 – 16:30",
         "locationName": "Приемная депутата (ул. Островского, 22)",
         "address": "ул. Островского, 22",
         "room": "каб. приёма",
         "phone": "8-0152-79-62-50",
         "appointmentRequired": false,
-        "coordinates": [
-          53.691341,
-          23.833418
-        ]
+        "coordinates": [53.691341, 23.833418]
       },
       {
         "id": "rec-3-2",
         "dayOfWeek": "Вторник",
         "frequency": "4-й вторник месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Пушкина, 40)",
         "address": "ул. Пушкина, 40",
         "room": "каб. приёма",
         "phone": "8-0152-79-62-50",
         "appointmentRequired": false,
-        "coordinates": [
-          53.696582,
-          23.827067
-        ]
+        "coordinates": [53.696582, 23.827067]
       }
     ],
     "initiatives": [],
@@ -167,31 +149,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-4-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 13:00",
         "locationName": "Приемная депутата (ул. Курчатова, 1)",
         "address": "ул. Курчатова, 1",
         "room": "каб. приёма",
         "phone": "8-0152-45-12-74",
         "appointmentRequired": false,
-        "coordinates": [
-          53.707686,
-          23.830553
-        ]
+        "coordinates": [53.707686, 23.830553]
       },
       {
         "id": "rec-4-2",
         "dayOfWeek": "Среда",
         "frequency": "2-я среда месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Дзержинского, 113а)",
         "address": "ул. Дзержинского, 113а",
         "room": "каб. приёма",
         "phone": "8-0152-45-12-74",
         "appointmentRequired": false,
-        "coordinates": [
-          53.705181,
-          23.840847
-        ]
+        "coordinates": [53.705181, 23.840847]
       }
     ],
     "initiatives": [],
@@ -216,31 +192,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-5-1",
         "dayOfWeek": "Вторник",
         "frequency": "1-й и 3-й вторник месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 14:00",
         "locationName": "Приемная депутата (ул. Доватора, 23)",
         "address": "ул. Доватора, 23",
         "room": "каб. приёма",
         "phone": "8-0152-55-88-25",
         "appointmentRequired": false,
-        "coordinates": [
-          53.693895,
-          23.828046
-        ]
+        "coordinates": [53.693895, 23.828046]
       },
       {
         "id": "rec-5-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 17.30",
+        "time": "17:30 – 19:00",
         "locationName": "Приемная депутата (ул. Болдина, 10б)",
         "address": "ул. Болдина, 10б",
         "room": "каб. приёма",
         "phone": "8-0152-55-88-25",
         "appointmentRequired": false,
-        "coordinates": [
-          53.693362,
-          23.80531
-        ]
+        "coordinates": [53.693362, 23.80531]
       }
     ],
     "initiatives": [],
@@ -265,31 +235,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-6-1",
         "dayOfWeek": "Понедельник",
         "frequency": "1-й понедельник месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 13:00",
         "locationName": "Приемная депутата (ул. Горького, 86)",
         "address": "ул. Горького, 86",
         "room": "каб. приёма",
         "phone": "8-0152-44-55-44",
         "appointmentRequired": false,
-        "coordinates": [
-          53.703923,
-          23.816063
-        ]
+        "coordinates": [53.703923, 23.816063]
       },
       {
         "id": "rec-6-2",
         "dayOfWeek": "Четверг",
         "frequency": "3-й четверг месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Врублевского, 92)",
         "address": "ул. Врублевского, 92",
         "room": "каб. приёма",
         "phone": "8-0152-44-55-44",
         "appointmentRequired": false,
-        "coordinates": [
-          53.707595,
-          23.800774
-        ]
+        "coordinates": [53.707595, 23.800774]
       }
     ],
     "initiatives": [],
@@ -314,31 +278,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-7-1",
         "dayOfWeek": "Понедельник",
         "frequency": "3-й понедельник месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 12:00",
         "locationName": "Приемная депутата (ул. Ожешко, 9)",
         "address": "ул. Ожешко, 9",
         "room": "каб. приёма",
         "phone": "8-0152-60-70-03",
         "appointmentRequired": false,
-        "coordinates": [
-          53.683338,
-          23.836167
-        ]
+        "coordinates": [53.683338, 23.836167]
       },
       {
         "id": "rec-7-2",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 17.30",
+        "time": "17:30 – 19:30",
         "locationName": "Приемная депутата (ул. Курчатова, 7)",
         "address": "ул. Курчатова, 7",
         "room": "каб. приёма",
         "phone": "8-0152-60-70-03",
         "appointmentRequired": false,
-        "coordinates": [
-          53.706438,
-          23.811544
-        ]
+        "coordinates": [53.706438, 23.811544]
       }
     ],
     "initiatives": [],
@@ -363,16 +321,13 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-8-1",
         "dayOfWeek": "Понедельник",
         "frequency": "1-й и 3-й понедельник месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 19:30",
         "locationName": "Приемная депутата (ул. Горького, 82)",
         "address": "ул. Горького, 82",
         "room": "каб. приёма",
         "phone": "8-0152-44-74-01",
         "appointmentRequired": false,
-        "coordinates": [
-          53.701934,
-          23.816737
-        ]
+        "coordinates": [53.701934, 23.816737]
       }
     ],
     "initiatives": [],
@@ -390,38 +345,32 @@ export const DEPUTIES_DATA: Deputy[] = [
     "mainJob": "Руководящая должность г. Гродно",
     "party": "Беспартийный",
     "birthYear": 1980,
-    "phone": "8-0152-55-25-02",
+    "phone": "8-0152-55-25-02, 55-25-01",
     "email": "deputy@grodno.gov.by",
     "receptionSchedules": [
       {
         "id": "rec-9-1",
         "dayOfWeek": "Среда",
         "frequency": "2-я среда месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 20:00",
         "locationName": "Приемная депутата (ул. Лиможа, 46)",
         "address": "ул. Лиможа, 46",
         "room": "каб. приёма",
-        "phone": "8-0152-55-25-02",
+        "phone": "8-0152-55-25-02, 55-25-01",
         "appointmentRequired": false,
-        "coordinates": [
-          53.712994,
-          23.846022
-        ]
+        "coordinates": [53.712994, 23.846022]
       },
       {
         "id": "rec-9-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 08.00",
+        "time": "08:00 – 13:00",
         "locationName": "Приемная депутата (бул. Ленинского Комсомола, 57)",
         "address": "бул. Ленинского Комсомола, 57",
         "room": "каб. приёма",
-        "phone": "8-0152-55-25-02",
+        "phone": "8-0152-55-25-02, 55-25-01",
         "appointmentRequired": false,
-        "coordinates": [
-          53.697483,
-          23.789949
-        ]
+        "coordinates": [53.697483, 23.789949]
       }
     ],
     "initiatives": [],
@@ -446,31 +395,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-10-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 10:00",
         "locationName": "Приемная депутата (ул. Дзержинского, 96)",
         "address": "ул. Дзержинского, 96",
         "room": "каб. приёма",
         "phone": "8-0152-45-27-03",
         "appointmentRequired": false,
-        "coordinates": [
-          53.70278,
-          23.84052
-        ]
+        "coordinates": [53.70278, 23.84052]
       },
       {
         "id": "rec-10-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 17.30",
+        "time": "17:30 – 20:00",
         "locationName": "Приемная депутата (ул. Брикеля, 25/1)",
         "address": "ул. Брикеля, 25/1",
         "room": "каб. приёма",
         "phone": "8-0152-45-27-03",
         "appointmentRequired": false,
-        "coordinates": [
-          53.697595,
-          23.854699
-        ]
+        "coordinates": [53.697595, 23.854699]
       }
     ],
     "initiatives": [],
@@ -495,31 +438,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-11-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 17.10",
+        "time": "17:10 – 19:00",
         "locationName": "Приемная депутата (улица Виктора Глухова, 16)",
         "address": "улица Виктора Глухова, 16",
         "room": "каб. приёма",
         "phone": "8-0152-32-16-39",
         "appointmentRequired": false,
-        "coordinates": [
-          53.722223,
-          23.8759
-        ]
+        "coordinates": [53.722223, 23.8759]
       },
       {
         "id": "rec-11-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 14.00",
+        "time": "14:00 – 17:00",
         "locationName": "Приемная депутата (ул. Лиможа, 25)",
         "address": "ул. Лиможа, 25",
         "room": "каб. приёма",
         "phone": "8-0152-32-16-39",
         "appointmentRequired": false,
-        "coordinates": [
-          53.710036,
-          23.850477
-        ]
+        "coordinates": [53.710036, 23.850477]
       }
     ],
     "initiatives": [],
@@ -537,38 +474,32 @@ export const DEPUTIES_DATA: Deputy[] = [
     "mainJob": "Руководящая должность г. Гродно",
     "party": "Беспартийный",
     "birthYear": 1980,
-    "phone": "8-029-87-99-936",
+    "phone": "8-029-87-99-936, 8-029-87-99-928",
     "email": "deputy@grodno.gov.by",
     "receptionSchedules": [
       {
         "id": "rec-12-1",
         "dayOfWeek": "Среда",
         "frequency": "2-я среда месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 20:00",
         "locationName": "Приемная депутата (ул. Лиможа, 11)",
         "address": "ул. Лиможа, 11",
         "room": "каб. приёма",
-        "phone": "8-029-87-99-936",
+        "phone": "8-029-87-99-936, 8-029-87-99-928",
         "appointmentRequired": false,
-        "coordinates": [
-          53.703971,
-          23.852319
-        ]
+        "coordinates": [53.703971, 23.852319]
       },
       {
         "id": "rec-12-2",
         "dayOfWeek": "Понедельник",
         "frequency": "1-й и 3-й понедельник месяца",
-        "time": "с 14.00",
+        "time": "14:00 – 17:30",
         "locationName": "Приемная депутата (ул. Красноармейская, 3)",
         "address": "ул. Красноармейская, 3",
         "room": "каб. приёма",
-        "phone": "8-029-87-99-936",
+        "phone": "8-029-87-99-936, 8-029-87-99-928",
         "appointmentRequired": false,
-        "coordinates": [
-          53.677263,
-          23.842294
-        ]
+        "coordinates": [53.677263, 23.842294]
       }
     ],
     "initiatives": [],
@@ -592,17 +523,14 @@ export const DEPUTIES_DATA: Deputy[] = [
       {
         "id": "rec-13-1",
         "dayOfWeek": "Вторник",
-        "frequency": "каждый вторник",
-        "time": "с 10.00",
+        "frequency": "Каждый вторник",
+        "time": "10:00 – 13:00, 14:00 – 17:00",
         "locationName": "Приемная депутата (ул. Победы, 16)",
         "address": "ул. Победы, 16",
         "room": "каб. приёма",
         "phone": "8-0152-50-90-09",
         "appointmentRequired": false,
-        "coordinates": [
-          53.659637,
-          23.834083
-        ]
+        "coordinates": [53.659637, 23.834083]
       }
     ],
     "initiatives": [],
@@ -626,17 +554,38 @@ export const DEPUTIES_DATA: Deputy[] = [
       {
         "id": "rec-14-1",
         "dayOfWeek": "Среда",
-        "frequency": "последняя среда месяца",
-        "time": "с 17.00-20.00",
+        "frequency": "Последняя среда месяца",
+        "time": "17:00 – 20:00",
         "locationName": "Приемная депутата (ул. Транспортная, 3)",
         "address": "ул. Транспортная, 3",
         "room": "каб. приёма",
         "phone": "8-0152-52-11-91",
         "appointmentRequired": false,
-        "coordinates": [
-          53.670473,
-          23.82236
-        ]
+        "coordinates": [53.670473, 23.82236]
+      },
+      {
+        "id": "rec-14-2",
+        "dayOfWeek": "Среда",
+        "frequency": "1-я среда месяца",
+        "time": "08:00 – 13:00, 14:00 – 15:00",
+        "locationName": "Приемная депутата (ул. Транспортная, 3)",
+        "address": "ул. Транспортная, 3",
+        "room": "каб. приёма",
+        "phone": "8-0152-52-11-91",
+        "appointmentRequired": false,
+        "coordinates": [53.670473, 23.82236]
+      },
+      {
+        "id": "rec-14-3",
+        "dayOfWeek": "Суббота",
+        "frequency": "5-я суббота месяца",
+        "time": "09:00 – 12:00",
+        "locationName": "Приемная депутата (ул. Транспортная, 3)",
+        "address": "ул. Транспортная, 3",
+        "room": "каб. приёма",
+        "phone": "8-0152-52-11-91",
+        "appointmentRequired": false,
+        "coordinates": [53.670473, 23.82236]
       }
     ],
     "initiatives": [],
@@ -661,16 +610,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-15-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я и 3-я среда месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 12:00",
         "locationName": "Приемная депутата (ул. Советских Пограничников, 115)",
         "address": "ул. Советских Пограничников, 115",
         "room": "каб. приёма",
         "phone": "8-0152-68-19-53",
         "appointmentRequired": false,
-        "coordinates": [
-          53.673716,
-          23.79718
-        ]
+        "coordinates": [53.673716, 23.79718]
+      },
+      {
+        "id": "rec-15-2",
+        "dayOfWeek": "Среда",
+        "frequency": "2-я и 4-я среда месяца",
+        "time": "14:00 – 17:00",
+        "locationName": "Приемная депутата (ул. Советских Пограничников, 115)",
+        "address": "ул. Советских Пограничников, 115",
+        "room": "каб. приёма",
+        "phone": "8-0152-68-19-53",
+        "appointmentRequired": false,
+        "coordinates": [53.673716, 23.79718]
       }
     ],
     "initiatives": [],
@@ -695,31 +653,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-16-1",
         "dayOfWeek": "Четверг",
         "frequency": "2-й четверг месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 12:00",
         "locationName": "Приемная депутата (пл. Ленина, 2/1)",
         "address": "пл. Ленина, 2/1",
         "room": "каб. приёма",
         "phone": "8-0152-62-61-51",
         "appointmentRequired": false,
-        "coordinates": [
-          53.684036,
-          23.833356
-        ]
+        "coordinates": [53.684036, 23.833356]
       },
       {
         "id": "rec-16-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 17.30",
+        "time": "17:30 – 19:00",
         "locationName": "Приемная депутата (ул. Репина, 9а)",
         "address": "ул. Репина, 9а",
         "room": "каб. приёма",
         "phone": "8-0152-62-61-51",
         "appointmentRequired": false,
-        "coordinates": [
-          53.662305,
-          23.791054
-        ]
+        "coordinates": [53.662305, 23.791054]
       }
     ],
     "initiatives": [],
@@ -744,16 +696,13 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-17-1",
         "dayOfWeek": "Среда",
         "frequency": "2-я среда месяца",
-        "time": "с 15.00",
+        "time": "15:00 – 17:00",
         "locationName": "Приемная депутата (ул. Соломовой, 128А)",
         "address": "ул. Соломовой, 128А",
         "room": "каб. приёма",
         "phone": "8-0152-39-36-69",
         "appointmentRequired": false,
-        "coordinates": [
-          53.654434,
-          23.782286
-        ]
+        "coordinates": [53.654434, 23.782286]
       }
     ],
     "initiatives": [],
@@ -778,16 +727,13 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-18-1",
         "dayOfWeek": "Вторник",
         "frequency": "2-й вторник месяца",
-        "time": "с 9.00",
-        "locationName": "Приемная депутата (бул. Ленинского Комсомола, 17)",
-        "address": "бул. Ленинского Комсомола, 17",
+        "time": "09:00 – 14:00",
+        "locationName": "Приемная депутата (бул. Ленинского Комсомола)",
+        "address": "бул. Ленинского Комсомола",
         "room": "каб. приёма",
         "phone": "8-0152-55-90-23",
         "appointmentRequired": false,
-        "coordinates": [
-          53.701311,
-          23.813781
-        ]
+        "coordinates": [53.701311, 23.813781]
       }
     ],
     "initiatives": [],
@@ -812,16 +758,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-19-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 08.00",
-        "locationName": "Приемная депутата (ул. Томина, 28)",
-        "address": "ул. Томина, 28",
+        "time": "08:00 – 13:00",
+        "locationName": "ГУО «Средняя школа № 33 им. Г.И.Обелевского г. Гродно»",
+        "address": "ГУО «Средняя школа № 33 им. Г.И.Обелевского г. Гродно» (ул. Томина, 28)",
         "room": "каб. приёма",
         "phone": "8-0152-33-86-35",
         "appointmentRequired": false,
-        "coordinates": [
-          53.649119,
-          23.826708
-        ]
+        "coordinates": [53.649119, 23.826708]
+      },
+      {
+        "id": "rec-19-2",
+        "dayOfWeek": "Среда",
+        "frequency": "3-я среда месяца",
+        "time": "17:00 – 19:00",
+        "locationName": "ГУО «Средняя школа № 33 им. Г.И.Обелевского г. Гродно»",
+        "address": "ГУО «Средняя школа № 33 им. Г.И.Обелевского г. Гродно» (ул. Томина, 28)",
+        "room": "каб. приёма",
+        "phone": "8-0152-33-86-35",
+        "appointmentRequired": false,
+        "coordinates": [53.649119, 23.826708]
       }
     ],
     "initiatives": [],
@@ -846,16 +801,13 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-20-1",
         "dayOfWeek": "Понедельник",
         "frequency": "1-й, 3-й понедельник месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 20:00",
         "locationName": "Приемная депутата (ул. Наполеона Орды, 5)",
         "address": "ул. Наполеона Орды, 5",
         "room": "каб. приёма",
         "phone": "8-029-509-48-56",
         "appointmentRequired": false,
-        "coordinates": [
-          53.621234,
-          23.814563
-        ]
+        "coordinates": [53.621234, 23.814563]
       }
     ],
     "initiatives": [],
@@ -880,16 +832,13 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-21-1",
         "dayOfWeek": "Понедельник",
         "frequency": "1-й, 3-й понедельник месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 20:00",
         "locationName": "Приемная депутата (ул. Наполеона Орды, 5)",
         "address": "ул. Наполеона Орды, 5",
         "room": "каб. приёма",
         "phone": "8-029-866-92-65",
         "appointmentRequired": false,
-        "coordinates": [
-          53.621234,
-          23.814563
-        ]
+        "coordinates": [53.621234, 23.814563]
       }
     ],
     "initiatives": [],
@@ -914,16 +863,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-22-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 10.00",
+        "time": "10:00 – 14:00",
         "locationName": "Приемная депутата (ул. Кремко, 29)",
         "address": "ул. Кремко, 29",
         "room": "каб. приёма",
         "phone": "8-0152-63-43-93",
         "appointmentRequired": false,
-        "coordinates": [
-          53.636617,
-          23.861491
-        ]
+        "coordinates": [53.636617, 23.861491]
+      },
+      {
+        "id": "rec-22-2",
+        "dayOfWeek": "Среда",
+        "frequency": "3-я среда месяца",
+        "time": "16:00 – 20:00",
+        "locationName": "Приемная депутата (ул. Кремко, 29)",
+        "address": "ул. Кремко, 29",
+        "room": "каб. приёма",
+        "phone": "8-0152-63-43-93",
+        "appointmentRequired": false,
+        "coordinates": [53.636617, 23.861491]
       }
     ],
     "initiatives": [],
@@ -948,31 +906,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-23-1",
         "dayOfWeek": "Понедельник",
         "frequency": "2-й понедельник месяца",
-        "time": "с 16.00",
+        "time": "16:00 – 17:00",
         "locationName": "Приемная депутата (ул. Кабяка, 2а)",
         "address": "ул. Кабяка, 2а",
         "room": "каб. приёма",
         "phone": "8-0152-62-23-37",
         "appointmentRequired": false,
-        "coordinates": [
-          53.641908,
-          23.844719
-        ]
+        "coordinates": [53.641908, 23.844719]
       },
       {
         "id": "rec-23-2",
         "dayOfWeek": "Понедельник",
         "frequency": "4-й понедельник месяца",
-        "time": "с 16.00",
+        "time": "16:00 – 18:00",
         "locationName": "Приемная депутата (ул. Ожешко, 1)",
         "address": "ул. Ожешко, 1",
         "room": "каб. приёма",
         "phone": "8-0152-62-23-37",
         "appointmentRequired": false,
-        "coordinates": [
-          53.682484,
-          23.832924
-        ]
+        "coordinates": [53.682484, 23.832924]
       }
     ],
     "initiatives": [],
@@ -990,38 +942,32 @@ export const DEPUTIES_DATA: Deputy[] = [
     "mainJob": "Руководящая должность г. Гродно",
     "party": "Беспартийный",
     "birthYear": 1980,
-    "phone": "8-0152-62-26-10",
+    "phone": "8-0152-62-26-10, 62-23-80",
     "email": "deputy@grodno.gov.by",
     "receptionSchedules": [
       {
         "id": "rec-24-1",
         "dayOfWeek": "Среда",
         "frequency": "1-я среда месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 13:00",
         "locationName": "Приемная депутата (ул. Советская, 4)",
         "address": "ул. Советская, 4",
         "room": "каб. приёма",
-        "phone": "8-0152-62-26-10",
+        "phone": "8-0152-62-26-10, 62-23-80",
         "appointmentRequired": false,
-        "coordinates": [
-          53.679396,
-          23.829241
-        ]
+        "coordinates": [53.679396, 23.829241]
       },
       {
         "id": "rec-24-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Вишневецкая, 14)",
         "address": "ул. Вишневецкая, 14",
         "room": "каб. приёма",
-        "phone": "8-0152-62-26-10",
+        "phone": "8-0152-62-26-10, 62-23-80",
         "appointmentRequired": false,
-        "coordinates": [
-          53.641892,
-          23.853092
-        ]
+        "coordinates": [53.641892, 23.853092]
       }
     ],
     "initiatives": [],
@@ -1046,31 +992,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-25-1",
         "dayOfWeek": "Понедельник",
         "frequency": "2-й понедельник месяца",
-        "time": "с 16.00",
+        "time": "16:00 – 17:00",
         "locationName": "Приемная депутата (ул. Кабяка, 2а)",
         "address": "ул. Кабяка, 2а",
         "room": "каб. приёма",
         "phone": "8-0152-45-42-72",
         "appointmentRequired": false,
-        "coordinates": [
-          53.641908,
-          23.844719
-        ]
+        "coordinates": [53.641908, 23.844719]
       },
       {
         "id": "rec-25-2",
         "dayOfWeek": "Понедельник",
         "frequency": "4-й понедельник месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 10:00",
         "locationName": "Приемная депутата (Скидельское шоссе, 18)",
         "address": "Скидельское шоссе, 18",
         "room": "каб. приёма",
         "phone": "8-0152-45-42-72",
         "appointmentRequired": false,
-        "coordinates": [
-          53.66397,
-          23.941701
-        ]
+        "coordinates": [53.66397, 23.941701]
       }
     ],
     "initiatives": [],
@@ -1095,16 +1035,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-26-1",
         "dayOfWeek": "Понедельник",
         "frequency": "2-й понедельник месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (Индурское шоссе, 14)",
         "address": "Индурское шоссе, 14",
         "room": "каб. приёма",
         "phone": "8-0152-66-81-52",
         "appointmentRequired": false,
-        "coordinates": [
-          53.64542,
-          23.843713
-        ]
+        "coordinates": [53.64542, 23.843713]
+      },
+      {
+        "id": "rec-26-2",
+        "dayOfWeek": "Понедельник",
+        "frequency": "4-й понедельник месяца",
+        "time": "08:30 – 13:00",
+        "locationName": "Приемная депутата (Индурское шоссе, 14)",
+        "address": "Индурское шоссе, 14",
+        "room": "каб. приёма",
+        "phone": "8-0152-66-81-52",
+        "appointmentRequired": false,
+        "coordinates": [53.64542, 23.843713]
       }
     ],
     "initiatives": [],
@@ -1129,31 +1078,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-27-1",
         "dayOfWeek": "Пятница",
         "frequency": "1-я пятница месяца",
-        "time": "с 17.30",
+        "time": "17:30 – 19:00",
         "locationName": "Приемная депутата (ул. Пестрака, 34/1)",
         "address": "ул. Пестрака, 34/1",
         "room": "каб. приёма",
         "phone": "8-029-268-58-80",
         "appointmentRequired": false,
-        "coordinates": [
-          53.653506,
-          23.839266
-        ]
+        "coordinates": [53.653506, 23.839266]
       },
       {
         "id": "rec-27-2",
         "dayOfWeek": "Среда",
         "frequency": "2-я среда месяца",
-        "time": "с 8.00",
+        "time": "08:00 – 13:00",
         "locationName": "Приемная депутата (ул. Орджоникидзе, 18)",
         "address": "ул. Орджоникидзе, 18",
         "room": "каб. приёма",
         "phone": "8-029-268-58-80",
         "appointmentRequired": false,
-        "coordinates": [
-          53.667016,
-          23.822082
-        ]
+        "coordinates": [53.667016, 23.822082]
       }
     ],
     "initiatives": [],
@@ -1178,31 +1121,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-28-1",
         "dayOfWeek": "Вторник",
         "frequency": "1-й вторник месяца",
-        "time": "с 9.00",
+        "time": "09:00 – 13:00",
         "locationName": "Приемная депутата (ул. Врублевского, 33)",
         "address": "ул. Врублевского, 33",
         "room": "каб. приёма",
         "phone": "8-0152-68-20-20",
         "appointmentRequired": false,
-        "coordinates": [
-          53.704189,
-          23.807789
-        ]
+        "coordinates": [53.704189, 23.807789]
       },
       {
         "id": "rec-28-2",
         "dayOfWeek": "Среда",
         "frequency": "3-я среда месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 20:00",
         "locationName": "Приемная депутата (ул. Фомичева, 16)",
         "address": "ул. Фомичева, 16",
         "room": "каб. приёма",
         "phone": "8-0152-68-20-20",
         "appointmentRequired": false,
-        "coordinates": [
-          53.662124,
-          23.844522
-        ]
+        "coordinates": [53.662124, 23.844522]
       }
     ],
     "initiatives": [],
@@ -1227,31 +1164,25 @@ export const DEPUTIES_DATA: Deputy[] = [
         "id": "rec-29-1",
         "dayOfWeek": "Четверг",
         "frequency": "2-й четверг месяца",
-        "time": "с 17.00",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Белуша, 18)",
         "address": "ул. Белуша, 18",
         "room": "каб. приёма",
         "phone": "8-029-258-76-04",
         "appointmentRequired": false,
-        "coordinates": [
-          53.672799,
-          23.848097
-        ]
+        "coordinates": [53.672799, 23.848097]
       },
       {
         "id": "rec-29-2",
         "dayOfWeek": "Среда",
         "frequency": "4-я среда месяца",
-        "time": "с 15.00",
+        "time": "15:00 – 17:00",
         "locationName": "Приемная депутата (ул. Гаспадарчая, 28)",
         "address": "ул. Гаспадарчая, 28",
         "room": "каб. приёма",
         "phone": "8-029-258-76-04",
         "appointmentRequired": false,
-        "coordinates": [
-          53.708911,
-          23.828352
-        ]
+        "coordinates": [53.708911, 23.828352]
       }
     ],
     "initiatives": [],
@@ -1259,13 +1190,13 @@ export const DEPUTIES_DATA: Deputy[] = [
   },
   {
     "id": "deputy-30",
-    "fullName": "Вакансия",
-    "shortName": "Нет депутата",
+    "fullName": "Депутат отсутствует",
+    "shortName": "Депутат отсутствует",
     "districtId": "district-30",
     "level": "city",
-    "levelTitle": "Депутат Гродненского городского Совета депутатов XXIX созыва",
-    "commission": "Постоянная комиссия",
-    "commissionRole": "Член комиссии",
+    "levelTitle": "Гродненский городской Совет депутатов XXIX созыва",
+    "commission": "Захаровский избирательный округ № 30",
+    "commissionRole": "Вакансия",
     "mainJob": "",
     "party": "",
     "birthYear": 1980,
@@ -1274,22 +1205,19 @@ export const DEPUTIES_DATA: Deputy[] = [
     "receptionSchedules": [
       {
         "id": "rec-30-1",
-        "dayOfWeek": "Среда",
-        "frequency": "1-я среда месяца",
-        "time": "17:00 – 19:00",
-        "locationName": "Приемная депутата",
-        "address": "ул. Ленина, 1",
-        "room": "каб. 1",
+        "dayOfWeek": "Четверг",
+        "frequency": "2-й четверг месяца",
+        "time": "09:00 – 12:00",
+        "locationName": "Приемная (пл. Ленина, 2/1)",
+        "address": "пл. Ленина, 2/1",
+        "room": "каб. приёма",
         "phone": "8-0152-73-10-00",
         "appointmentRequired": false,
-        "coordinates": [
-          53.689059,
-          23.779289
-        ]
+        "coordinates": [53.684036, 23.833356]
       }
     ],
     "initiatives": [],
-    "bio": "Биография депутата..."
+    "bio": "Захаровский избирательный округ № 30."
   },
   {
     "id": "deputy-31",
@@ -1309,17 +1237,14 @@ export const DEPUTIES_DATA: Deputy[] = [
       {
         "id": "rec-31-1",
         "dayOfWeek": "Четверг",
-        "frequency": "2-й четверг месяца",
-        "time": "с 17.00",
+        "frequency": "2-й и 4-й четверг месяца",
+        "time": "17:00 – 19:00",
         "locationName": "Приемная депутата (ул. Карского, 2)",
         "address": "ул. Карского, 2",
         "room": "каб. приёма",
         "phone": "8-0152-49-21-03",
         "appointmentRequired": false,
-        "coordinates": [
-          53.690307,
-          23.878208
-        ]
+        "coordinates": [53.690307, 23.878208]
       }
     ],
     "initiatives": [],

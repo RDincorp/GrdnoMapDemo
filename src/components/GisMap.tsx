@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { District, Deputy, Institution, ReceptionScheduleItem } from '../types';
 import { GRODNO_MAP_CONFIG } from '../data/mockData';
 import { isValidLatLng } from '../utils/geoUtils';
-import { Layers, Locate, Maximize2, Check, Map as MapIcon, Compass, Sparkles } from 'lucide-react';
+import { Layers, Locate, Maximize2, Check, Compass, Sparkles } from 'lucide-react';
 
 // Declaration for Yandex Maps 2.1 global
 declare global {
@@ -50,12 +50,12 @@ export const GisMap: React.FC<GisMapProps> = ({
   // Layer toggles
   const [showReceptions, setShowReceptions] = useState<boolean>(true);
   const [showInstitutions, setShowInstitutions] = useState<boolean>(true);
-  const [showDistrictBorders, setShowDistrictBorders] = useState<boolean>(true);
+  const [showParties, setShowParties] = useState<boolean>(true);
 
   // GeoObject collections refs
   const institutionsGroupRef = useRef<any>(null);
+  const partiesGroupRef = useRef<any>(null);
   const receptionsGroupRef = useRef<any>(null);
-  const districtPolygonRef = useRef<any>(null);
   const userMarkerRef = useRef<any>(null);
   const searchMarkerRef = useRef<any>(null);
 
@@ -88,12 +88,15 @@ export const GisMap: React.FC<GisMapProps> = ({
 
           // Groups for collections
           const instGroup = new window.ymaps.GeoObjectCollection({}, {});
+          const partyGroup = new window.ymaps.GeoObjectCollection({}, {});
           const recGroup = new window.ymaps.GeoObjectCollection({}, {});
 
           map.geoObjects.add(instGroup);
+          map.geoObjects.add(partyGroup);
           map.geoObjects.add(recGroup);
 
           institutionsGroupRef.current = instGroup;
+          partiesGroupRef.current = partyGroup;
           receptionsGroupRef.current = recGroup;
           mapInstanceRef.current = map;
 
@@ -137,7 +140,7 @@ export const GisMap: React.FC<GisMapProps> = ({
     }
   };
 
-  // Render Institutions Placemarks
+  // Render Authorities Placemarks
   useEffect(() => {
     if (!isMapReady || !mapInstanceRef.current || !institutionsGroupRef.current) return;
     const group = institutionsGroupRef.current;
@@ -149,7 +152,7 @@ export const GisMap: React.FC<GisMapProps> = ({
     if (!ymaps) return;
 
     institutions
-      .filter((inst) => inst && isValidLatLng(inst.coordinates))
+      .filter((inst) => inst && inst.type !== 'party' && isValidLatLng(inst.coordinates))
       .forEach((inst) => {
         const iconLayout = ymaps.templateLayoutFactory.createClass(
           `<div class="ym-custom-inst cursor-pointer group" style="position:relative; width:32px; height:32px; transform:translate(-16px, -16px);" title="${inst.shortName}">
@@ -179,6 +182,7 @@ export const GisMap: React.FC<GisMapProps> = ({
             balloonContentBody: `
               <div class="text-xs text-slate-600 mt-1 space-y-1">
                 <div>📍 <strong>Адрес:</strong> ${inst.address}</div>
+                ${inst.headName ? `<div>👤 <strong>Руководитель:</strong> ${inst.headName}</div>` : ''}
                 ${inst.phone ? `<div>📞 <strong>Телефон:</strong> ${inst.phone}</div>` : ''}
                 ${inst.workSchedule ? `<div>🕒 <strong>Режим работы:</strong> ${inst.workSchedule}</div>` : ''}
               </div>
@@ -203,6 +207,65 @@ export const GisMap: React.FC<GisMapProps> = ({
         group.add(placemark);
       });
   }, [isMapReady, institutions, showInstitutions, onSelectInstitution]);
+
+  // Render Party Organizations Placemarks (Dedicated Distinct Icon)
+  useEffect(() => {
+    if (!isMapReady || !mapInstanceRef.current || !partiesGroupRef.current) return;
+    const group = partiesGroupRef.current;
+    group.removeAll();
+
+    if (!showParties) return;
+
+    const ymaps = window.ymaps;
+    if (!ymaps) return;
+
+    institutions
+      .filter((inst) => inst && inst.type === 'party' && isValidLatLng(inst.coordinates))
+      .forEach((inst) => {
+        // Distinct Purple/Violet badge with Waving Flag Icon
+        const iconLayout = ymaps.templateLayoutFactory.createClass(
+          `<div class="ym-custom-party cursor-pointer group" style="position:relative; width:32px; height:32px; transform:translate(-16px, -16px);" title="${inst.shortName}">
+            <div style="width:32px; height:32px; background:#7c3aed; border-radius:50%; box-shadow:0 4px 14px rgba(124,58,237,0.45); border:2.5px solid #ffffff; display:flex; align-items:center; justify-content:center; transition:transform 0.15s ease;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.3" stroke-linecap="round" stroke-linejoin="round">
+                <path d="M4 15s1-1 4-1 5 2 8 2 4-1 4-1V3s-1 1-4 1-5-2-8-2-4 1-4 1z"></path>
+                <line x1="4" y1="22" x2="4" y2="15"></line>
+              </svg>
+            </div>
+          </div>`
+        );
+
+        const placemark = new ymaps.Placemark(
+          inst.coordinates,
+          {
+            hintContent: `<strong>${inst.shortName}</strong><br/>${inst.address}`,
+            balloonContentHeader: `<div class="font-bold text-slate-900 text-sm flex items-center gap-1.5"><span style="color:#7c3aed;">🚩</span> ${inst.name}</div>`,
+            balloonContentBody: `
+              <div class="text-xs text-slate-600 mt-1 space-y-1">
+                <div>📍 <strong>Адрес:</strong> ${inst.address}</div>
+                ${inst.workSchedule ? `<div>🕒 <strong>Режим работы:</strong> ${inst.workSchedule}</div>` : ''}
+                ${inst.siteUrl ? `<div>🌐 <strong>Сайт:</strong> <a href="${inst.siteUrl}" target="_blank" rel="noreferrer" class="text-violet-600 font-medium underline">${inst.siteUrl}</a></div>` : ''}
+              </div>
+            `,
+            balloonContentFooter: `<div class="text-[10px] text-violet-700 font-semibold mt-1">Политическая партия / общественное объединение</div>`,
+          },
+          {
+            iconLayout: iconLayout,
+            iconShape: {
+              type: 'Circle',
+              coordinates: [0, 0],
+              radius: 16,
+            },
+            hideIconOnBalloonOpen: false,
+          }
+        );
+
+        placemark.events.add('click', () => {
+          onSelectInstitution(inst);
+        });
+
+        group.add(placemark);
+      });
+  }, [isMapReady, institutions, showParties, onSelectInstitution]);
 
   // Render Reception Schedules Placemarks
   useEffect(() => {
@@ -245,7 +308,7 @@ export const GisMap: React.FC<GisMapProps> = ({
               balloonContentBody: `
                 <div class="text-xs text-slate-600 mt-1 space-y-1">
                   <div>🏛️ <strong>Округ:</strong> ${district.shortName}</div>
-                  <div>📍 <strong>Адрес:</strong> ${schedule.address} (${schedule.room})</div>
+                  <div>📍 <strong>Адрес:</strong> ${schedule.address}</div>
                   <div>📅 <strong>График:</strong> ${schedule.frequency} ${schedule.time}</div>
                   <div>📞 <strong>Телефон:</strong> ${schedule.phone || deputy.phone}</div>
                 </div>
@@ -271,48 +334,6 @@ export const GisMap: React.FC<GisMapProps> = ({
         });
     });
   }, [isMapReady, deputies, districts, showReceptions, onSelectReception]);
-
-  // Render Selected District Polygon
-  useEffect(() => {
-    if (!isMapReady || !mapInstanceRef.current) return;
-    const map = mapInstanceRef.current;
-    const ymaps = window.ymaps;
-    if (!ymaps) return;
-
-    if (districtPolygonRef.current) {
-      map.geoObjects.remove(districtPolygonRef.current);
-      districtPolygonRef.current = null;
-    }
-
-    if (showDistrictBorders && selectedDistrict && Array.isArray(selectedDistrict.polygonCoordinates) && selectedDistrict.polygonCoordinates.length > 2) {
-      try {
-        const polygon = new ymaps.Polygon(
-          [selectedDistrict.polygonCoordinates],
-          {
-            hintContent: `<strong>${selectedDistrict.name}</strong>`,
-            balloonContentHeader: `<div class="font-bold text-slate-900">${selectedDistrict.name}</div>`,
-            balloonContentBody: `<div class="text-xs text-slate-600">${selectedDistrict.description}</div>`,
-          },
-          {
-            fillColor: selectedDistrict.color || '#3b82f6',
-            fillOpacity: 0.18,
-            strokeColor: selectedDistrict.strokeColor || '#1d4ed8',
-            strokeWidth: 3,
-            strokeOpacity: 0.85,
-          }
-        );
-
-        polygon.events.add('click', () => {
-          onSelectDistrict(selectedDistrict);
-        });
-
-        map.geoObjects.add(polygon);
-        districtPolygonRef.current = polygon;
-      } catch (err) {
-        console.warn('Polygon rendering error:', err);
-      }
-    }
-  }, [isMapReady, selectedDistrict, showDistrictBorders, onSelectDistrict]);
 
   // Render User Location Pin
   useEffect(() => {
@@ -478,7 +499,7 @@ export const GisMap: React.FC<GisMapProps> = ({
               </div>
               <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs" />
-                Места приёма
+                Приёмные депутатов
               </span>
             </label>
 
@@ -495,7 +516,7 @@ export const GisMap: React.FC<GisMapProps> = ({
               </div>
               <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
                 <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" />
-                Органы власти
+                Органы управления
               </span>
             </label>
 
@@ -503,16 +524,16 @@ export const GisMap: React.FC<GisMapProps> = ({
               <div className="relative flex items-center justify-center">
                 <input
                   type="checkbox"
-                  checked={showDistrictBorders}
-                  onChange={(e) => setShowDistrictBorders(e.target.checked)}
+                  checked={showParties}
+                  onChange={(e) => setShowParties(e.target.checked)}
                   className="peer sr-only"
                 />
-                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-600 transition-colors"></div>
+                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-violet-600 peer-checked:bg-violet-600 transition-colors"></div>
                 <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
               </div>
               <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 shadow-xs" />
-                Границы округа
+                <div className="w-2.5 h-2.5 rounded-full bg-violet-600 shadow-xs" />
+                Партийные организации
               </span>
             </label>
           </div>
@@ -585,23 +606,6 @@ export const GisMap: React.FC<GisMapProps> = ({
         >
           <Maximize2 className="w-4 h-4" />
         </button>
-      </div>
-
-      {/* Map Legend Banner at Bottom Left */}
-      <div className="absolute bottom-6 left-4 z-[400] bg-white/95 backdrop-blur px-3 py-1.5 rounded-md shadow border border-slate-200 text-[11px] text-slate-600 flex items-center gap-3">
-        <div className="flex items-center gap-1.5 font-bold text-slate-800 uppercase tracking-wider text-[10px]">
-          <MapIcon className="w-3.5 h-3.5 text-red-500" />
-          <span>Яндекс Карты</span>
-        </div>
-        <div className="h-3 w-px bg-slate-300"></div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-          <span className="font-medium text-slate-700">Ленинский</span>
-        </div>
-        <div className="flex items-center gap-1.5">
-          <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
-          <span className="font-medium text-slate-700">Октябрьский</span>
-        </div>
       </div>
     </div>
   );

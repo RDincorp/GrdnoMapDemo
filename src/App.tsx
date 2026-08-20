@@ -8,7 +8,7 @@ import { GisMap } from './components/GisMap';
 import { TerritoryPassport } from './components/TerritoryPassport';
 import { CitizenGuideModal } from './components/CitizenGuideModal';
 import { AboutModal } from './components/AboutModal';
-import { MapPin, CheckCircle, AlertCircle, ChevronUp, ChevronDown, Sparkles } from 'lucide-react';
+import { MapPin, ChevronUp, ChevronDown } from 'lucide-react';
 
 export default function App() {
   // Application Data States
@@ -24,10 +24,6 @@ export default function App() {
   // Geolocation & UI States
   const [userLocation, setUserLocation] = useState<[number, number] | null>(null);
   const [isLocating, setIsLocating] = useState<boolean>(false);
-  const [toastMessage, setToastMessage] = useState<{ text: string; type: 'success' | 'info' | 'warn' } | null>({
-    text: 'Добро пожаловать! Выберите объект на карте или введите адрес в строке поиска.',
-    type: 'info',
-  });
 
   // Modals & UI States
   const [guideModalOpen, setGuideModalOpen] = useState<boolean>(false);
@@ -63,12 +59,6 @@ export default function App() {
         } else {
           setSearchedLocation(null);
         }
-
-        const dep = result.deputy || deputies.find((d) => d.id === dist.deputyId);
-        showToast(
-          `Адрес: ${result.title} • Депутат: ${dep?.fullName || '—'} (${dist.shortName})`,
-          'success'
-        );
       }
     } else if (result.type === 'deputy') {
       setSearchedLocation(null);
@@ -80,7 +70,6 @@ export default function App() {
           setSelectedInstitution(null);
           setSelectedReception(null);
           setMobileDrawerOpen(true);
-          showToast(`Депутат: ${dep.fullName} (${dist.shortName})`, 'success');
         }
       }
     } else if (result.type === 'institution') {
@@ -91,7 +80,6 @@ export default function App() {
         setSelectedDistrict(null);
         setSelectedReception(null);
         setMobileDrawerOpen(true);
-        showToast(`Орган власти: ${inst.name}`, 'info');
       }
     }
   };
@@ -103,8 +91,6 @@ export default function App() {
     setSelectedInstitution(null);
     setSelectedReception(null);
     setMobileDrawerOpen(true);
-    const deputy = deputies.find((d) => d.id === district.deputyId);
-    showToast(`Выбран ${district.shortName} • Депутат: ${deputy?.shortName || '—'}`, 'info');
   };
 
   // Direct Map Institution Marker Selection
@@ -114,7 +100,6 @@ export default function App() {
     setSelectedDistrict(null);
     setSelectedReception(null);
     setMobileDrawerOpen(true);
-    showToast(`Орган власти: ${institution.shortName}`, 'info');
   };
 
   // Direct Map Reception Marker Selection
@@ -128,7 +113,6 @@ export default function App() {
     setSelectedReception(reception);
     setSelectedInstitution(null);
     setMobileDrawerOpen(true);
-    showToast(`Приемная депутата ${deputy.shortName}: ${reception.locationName}`, 'info');
   };
 
   // Geolocation Handler
@@ -160,30 +144,20 @@ export default function App() {
           setSelectedDistrict(matchedDist);
           setSelectedInstitution(null);
           setMobileDrawerOpen(true);
-          const dep = deputies.find((d) => d.id === matchedDist.deputyId);
-          showToast(
-            `GPS геолокация: Вы находитесь в ${matchedDist.shortName}! Депутат: ${dep?.fullName}`,
-            'success'
-          );
         } else {
-          // If the user's real location is outside Grodno (e.g. other city/country in cloud sandbox)
-          simulateDemoGeolocation(
-            'Ваше текущее местоположение вне г. Гродно. Демонстрация установлена на точку в Округе №3 (БЛК / ул. Доватора).'
-          );
+          simulateDemoGeolocation();
         }
       },
       (error) => {
         setIsLocating(false);
-        simulateDemoGeolocation(
-          'Геолокация недоступна. Демонстрация установлена на тестовую точку в Округе №3 (ул. Пушкина).'
-        );
+        simulateDemoGeolocation();
       },
       { timeout: 8000, enableHighAccuracy: true }
     );
   };
 
   // Simulation fallback for smooth testing in any sandbox
-  const simulateDemoGeolocation = (customMessage?: string) => {
+  const simulateDemoGeolocation = () => {
     setIsLocating(false);
     // Point on Pushkina st. in District 3
     const demoPoint: [number, number] = [53.6940, 23.8290];
@@ -192,18 +166,6 @@ export default function App() {
     setSelectedDistrict(targetDistrict);
     setSelectedInstitution(null);
     setMobileDrawerOpen(true);
-    const dep = deputies.find((d) => d.id === targetDistrict.deputyId);
-    showToast(
-      customMessage || `Геолокация определена: ${targetDistrict.shortName} • Депутат: ${dep?.fullName}`,
-      'success'
-    );
-  };
-
-  const showToast = (text: string, type: 'success' | 'info' | 'warn' = 'info') => {
-    setToastMessage({ text, type });
-    setTimeout(() => {
-      setToastMessage((prev) => (prev?.text === text ? null : prev));
-    }, 6000);
   };
 
   return (
@@ -284,62 +246,8 @@ export default function App() {
               isLocating={isLocating}
             />
           </div>
-
-          {/* Floating Toast */}
-          {toastMessage && (
-            <div className="absolute bottom-4 left-4 right-4 sm:left-auto sm:right-6 sm:max-w-md z-30 pointer-events-auto animate-in fade-in slide-in-from-bottom-2 duration-200">
-              <div
-                className={`p-3 rounded-lg shadow-xl border flex items-start gap-2.5 text-xs ${
-                  toastMessage.type === 'success'
-                    ? 'bg-slate-900 text-emerald-300 border-emerald-700/60'
-                    : toastMessage.type === 'warn'
-                    ? 'bg-slate-900 text-amber-300 border-amber-700/60'
-                    : 'bg-slate-900 text-slate-100 border-slate-700'
-                }`}
-              >
-                {toastMessage.type === 'success' ? (
-                  <CheckCircle className="w-4 h-4 text-emerald-400 shrink-0 mt-0.5" />
-                ) : (
-                  <Sparkles className="w-4 h-4 text-blue-400 shrink-0 mt-0.5" />
-                )}
-                <div className="flex-1 leading-relaxed text-[11px]">{toastMessage.text}</div>
-                <button
-                  type="button"
-                  onClick={() => setToastMessage(null)}
-                  className="text-slate-400 hover:text-white text-xs font-bold px-1"
-                >
-                  ✕
-                </button>
-              </div>
-            </div>
-          )}
         </div>
       </main>
-
-      {/* High Density Official Civic Footer */}
-      <footer className="h-9 bg-slate-900 flex items-center justify-between px-4 sm:px-6 text-[10px] text-slate-400 shrink-0 border-t border-slate-800 select-none">
-        <div className="flex items-center gap-2">
-          <span>&copy; 2024 Информационный портал</span>
-          <span className="hidden md:inline text-slate-600">|</span>
-          <span className="hidden md:inline text-slate-500">Гродненский городской Совет депутатов XXIX созыва</span>
-        </div>
-        <div className="flex items-center gap-4 uppercase tracking-widest text-[9px] font-semibold">
-          <button
-            type="button"
-            onClick={() => setGuideModalOpen(true)}
-            className="hover:text-blue-400 transition"
-          >
-            Электронные обращения
-          </button>
-          <button
-            type="button"
-            onClick={() => setAboutModalOpen(true)}
-            className="hover:text-blue-400 transition hidden sm:inline"
-          >
-            Контакты и регламент
-          </button>
-        </div>
-      </footer>
 
       {/* Modals */}
       <CitizenGuideModal
