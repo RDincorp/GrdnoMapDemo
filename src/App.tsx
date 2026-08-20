@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 import { DISTRICTS_DATA, DEPUTIES_DATA, INSTITUTIONS_DATA } from './data/mockData';
 import { District, Deputy, Institution, ReceptionScheduleItem, SearchResult } from './types';
-import { findDistrictByCoordinates } from './utils/geoUtils';
+import { findDistrictByCoordinates, isValidLatLng } from './utils/geoUtils';
 import { Navbar } from './components/Navbar';
 import { SmartSearch } from './components/SmartSearch';
 import { GisMap } from './components/GisMap';
@@ -54,7 +54,7 @@ export default function App() {
         setSelectedReception(null);
         setMobileDrawerOpen(true);
 
-        if (result.coordinates) {
+        if (result.coordinates && isValidLatLng(result.coordinates)) {
           setSearchedLocation({
             coordinates: result.coordinates,
             title: result.title,
@@ -142,9 +142,15 @@ export default function App() {
 
     navigator.geolocation.getCurrentPosition(
       (position) => {
-        const userLat = position.coords.latitude;
-        const userLng = position.coords.longitude;
+        const userLat = Number(position.coords.latitude);
+        const userLng = Number(position.coords.longitude);
         const coords: [number, number] = [userLat, userLng];
+        
+        if (!isValidLatLng(coords)) {
+          simulateDemoGeolocation();
+          return;
+        }
+
         setUserLocation(coords);
         setIsLocating(false);
 

@@ -13,8 +13,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.694716,
+      23.817186
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-1",
@@ -43,8 +43,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.684074,
+      23.828127
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-2",
@@ -73,8 +73,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.691341,
+      23.833418
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-3",
@@ -103,8 +103,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.707686,
+      23.830553
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-4",
@@ -133,8 +133,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.693895,
+      23.828046
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-5",
@@ -163,8 +163,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.703923,
+      23.816063
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-6",
@@ -193,8 +193,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.683338,
+      23.836167
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-7",
@@ -223,8 +223,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.701934,
+      23.816737
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-8",
@@ -253,8 +253,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.712994,
+      23.846022
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-9",
@@ -283,8 +283,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.70278,
+      23.84052
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-10",
@@ -313,8 +313,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.722223,
+      23.8759
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-11",
@@ -343,8 +343,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.703971,
+      23.852319
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-12",
@@ -373,8 +373,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.659637,
+      23.834083
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-13",
@@ -403,8 +403,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.670473,
+      23.82236
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-14",
@@ -433,8 +433,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.673716,
+      23.79718
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-15",
@@ -463,8 +463,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.684036,
+      23.833356
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-16",
@@ -493,8 +493,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.654434,
+      23.782286
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-17",
@@ -523,8 +523,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.701311,
+      23.813781
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-18",
@@ -553,8 +553,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.649119,
+      23.826708
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-19",
@@ -583,8 +583,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.621234,
+      23.814563
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-20",
@@ -613,8 +613,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.621234,
+      23.814563
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-21",
@@ -643,8 +643,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.636617,
+      23.861491
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-22",
@@ -673,8 +673,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.641908,
+      23.844719
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-23",
@@ -703,8 +703,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.679396,
+      23.829241
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-24",
@@ -733,8 +733,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.641908,
+      23.844719
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-25",
@@ -763,8 +763,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.64542,
+      23.843713
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-26",
@@ -793,8 +793,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.653506,
+      23.839266
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-27",
@@ -823,8 +823,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.704189,
+      23.807789
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-28",
@@ -853,8 +853,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.672799,
+      23.848097
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-29",
@@ -883,8 +883,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.689059,
+      23.779289
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-30",
@@ -913,8 +913,8 @@ export const DISTRICTS_DATA: District[] = [
     "votersCount": 15000,
     "populationEst": 20000,
     "center": [
-      53.68,
-      23.83
+      53.690307,
+      23.878208
     ],
     "polygonCoordinates": [],
     "deputyId": "deputy-31",

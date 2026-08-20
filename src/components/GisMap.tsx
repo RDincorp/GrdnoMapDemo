@@ -1,7 +1,15 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { District, Deputy, Institution, ReceptionScheduleItem } from '../types';
 import { GRODNO_MAP_CONFIG } from '../data/mockData';
-import { Layers, Locate, Maximize2, Building2, Check } from 'lucide-react';
+import { isValidLatLng } from '../utils/geoUtils';
+import { Layers, Locate, Maximize2, Check, Map as MapIcon, Compass, Sparkles } from 'lucide-react';
+
+// Declaration for Yandex Maps 2.1 global
+declare global {
+  interface Window {
+    ymaps?: any;
+  }
+}
 
 interface GisMapProps {
   districts: District[];
@@ -34,298 +42,519 @@ export const GisMap: React.FC<GisMapProps> = ({
   onTriggerGeolocation,
   isLocating,
 }) => {
-  const mapContainerRef = useRef<HTMLDivElement>(null);
-  const mapInstanceRef = useRef<any>(null); // ymaps3.YMap
-  const ymapsApiRef = useRef<any>(null); // ymaps3 reference
-  const markersRef = useRef<any[]>([]); // To store created markers
+  const mapContainerRef = useRef<HTMLDivElement | null>(null);
+  const mapInstanceRef = useRef<any>(null);
+  const [isMapReady, setIsMapReady] = useState<boolean>(false);
+  const [mapType, setMapType] = useState<'yandex#map' | 'yandex#satellite' | 'yandex#hybrid'>('yandex#map');
+
+  // Layer toggles
+  const [showReceptions, setShowReceptions] = useState<boolean>(true);
+  const [showInstitutions, setShowInstitutions] = useState<boolean>(true);
+  const [showDistrictBorders, setShowDistrictBorders] = useState<boolean>(true);
+
+  // GeoObject collections refs
+  const institutionsGroupRef = useRef<any>(null);
+  const receptionsGroupRef = useRef<any>(null);
+  const districtPolygonRef = useRef<any>(null);
   const userMarkerRef = useRef<any>(null);
   const searchMarkerRef = useRef<any>(null);
 
-  // Layer Visibility Toggles
-  const [showReceptions, setShowReceptions] = useState<boolean>(true);
-  const [showInstitutions, setShowInstitutions] = useState<boolean>(true);
-
-  // Helper to convert internal [lat, lng] to Yandex [lon, lat]
-  const toMapGLCoords = (coords: [number, number]): [number, number] => [coords[1], coords[0]];
-
-  // Initialize Map
+  // Initialize Yandex Map
   useEffect(() => {
     let isCancelled = false;
 
-    const initMap = async () => {
-      if (!mapContainerRef.current) return;
-      
-      // Wait for the Yandex Maps API script to load
-      while (typeof window.ymaps3 === 'undefined') {
-        if (isCancelled) return;
-        await new Promise(resolve => setTimeout(resolve, 100));
-      }
-      
-      await window.ymaps3.ready;
-      if (isCancelled) return;
+    const initYandexMap = () => {
+      if (!window.ymaps || !mapContainerRef.current || mapInstanceRef.current) return;
 
-      const { YMap, YMapDefaultSchemeLayer, YMapDefaultFeaturesLayer } = window.ymaps3;
-      
-      ymapsApiRef.current = window.ymaps3;
+      window.ymaps.ready(() => {
+        if (isCancelled || !mapContainerRef.current || mapInstanceRef.current) return;
 
-      // Ensure we don't initialize multiple times
-      if (mapInstanceRef.current) return;
+        try {
+          const map = new window.ymaps.Map(
+            mapContainerRef.current,
+            {
+              center: GRODNO_MAP_CONFIG.defaultCenter,
+              zoom: GRODNO_MAP_CONFIG.defaultZoom,
+              type: mapType,
+              controls: [], // Using modern custom UI overlay
+              behaviors: ['drag', 'scrollZoom', 'dblClickZoom', 'multiTouch'],
+            },
+            {
+              suppressMapOpenBlock: true,
+              yandexMapDisablePoiInteractivity: false,
+              searchControlProvider: 'yandex#search',
+            }
+          );
 
-      const map = new YMap(mapContainerRef.current, {
-        location: {
-          center: toMapGLCoords(GRODNO_MAP_CONFIG.defaultCenter),
-          zoom: GRODNO_MAP_CONFIG.defaultZoom,
+          // Groups for collections
+          const instGroup = new window.ymaps.GeoObjectCollection({}, {});
+          const recGroup = new window.ymaps.GeoObjectCollection({}, {});
+
+          map.geoObjects.add(instGroup);
+          map.geoObjects.add(recGroup);
+
+          institutionsGroupRef.current = instGroup;
+          receptionsGroupRef.current = recGroup;
+          mapInstanceRef.current = map;
+
+          setIsMapReady(true);
+        } catch (e) {
+          console.error('Yandex Maps initialization error:', e);
         }
       });
-      
-      map.addChild(new YMapDefaultSchemeLayer());
-      map.addChild(new YMapDefaultFeaturesLayer());
-      
-      mapInstanceRef.current = map;
     };
-    
-    initMap().catch(console.error);
+
+    if (window.ymaps) {
+      initYandexMap();
+    } else {
+      // Fallback dynamic loader if script wasn't loaded in head
+      const script = document.createElement('script');
+      script.src = 'https://api-maps.yandex.ru/2.1/?apikey=0a59849d-20dc-4962-bc60-6716e8436d1c&lang=ru_RU';
+      script.type = 'text/javascript';
+      script.onload = () => initYandexMap();
+      document.head.appendChild(script);
+    }
 
     return () => {
       isCancelled = true;
-      if (mapContainerRef.current) {
-        mapContainerRef.current.innerHTML = '';
+      if (mapInstanceRef.current) {
+        try {
+          mapInstanceRef.current.destroy();
+        } catch (e) {
+          // ignore
+        }
+        mapInstanceRef.current = null;
+        setIsMapReady(false);
       }
-      mapInstanceRef.current = null;
     };
   }, []);
 
-  // Render Markers (Receptions & Institutions)
-  useEffect(() => {
-    if (!mapInstanceRef.current || !ymapsApiRef.current) return;
-
-    // Clear old markers
-    markersRef.current.forEach(m => mapInstanceRef.current.removeChild(m));
-    markersRef.current = [];
-
-    // 1. Institutions Markers
-    if (showInstitutions) {
-      institutions.forEach((inst) => {
-        const isSelected = selectedInstitution?.id === inst.id;
-        const iconHtml = `
-          <div class="relative group cursor-pointer" style="pointer-events: auto;">
-            <div class="w-9 h-9 rounded-xl flex items-center justify-center shadow-md border-2 transition-transform transform ${
-              isSelected
-                ? 'bg-blue-600 border-white text-white scale-125 shadow-blue-500/50'
-                : 'bg-white border-blue-600 text-blue-700 hover:scale-110'
-            }">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-5 h-5" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 22V4a2 2 0 0 1 2-2h8a2 2 0 0 1 2 2v18Z"/><path d="M6 12H4a2 2 0 0 0-2 2v6a2 2 0 0 0 2 2h2"/><path d="M18 9h2a2 2 0 0 1 2 2v9a2 2 0 0 1-2 2h-2"/><path d="M10 6h4"/><path d="M10 10h4"/><path d="M10 14h4"/><path d="M10 18h4"/></svg>
-            </div>
-            <div class="custom-map-hover-label absolute top-10 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-900 text-white text-[11px] font-semibold px-2 py-1 rounded-md shadow-2xl border border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-              ${inst.shortName}
-            </div>
-          </div>
-        `;
-
-        const el = document.createElement('div');
-        el.innerHTML = iconHtml;
-        el.addEventListener('click', () => onSelectInstitution(inst));
-
-        const marker = new ymapsApiRef.current.YMapMarker({
-          coordinates: toMapGLCoords(inst.coordinates),
-        }, el);
-
-        mapInstanceRef.current.addChild(marker);
-        markersRef.current.push(marker);
-      });
+  // Update Map Type (Schema / Satellite / Hybrid)
+  const handleChangeMapType = (newType: 'yandex#map' | 'yandex#satellite' | 'yandex#hybrid') => {
+    setMapType(newType);
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setType(newType);
     }
+  };
 
-    // 2. Deputy Public Reception Points Markers
-    if (showReceptions) {
-      districts.forEach((district) => {
-        const deputy = deputies.find((d) => d.id === district.deputyId);
-        if (!deputy) return;
+  // Render Institutions Placemarks
+  useEffect(() => {
+    if (!isMapReady || !mapInstanceRef.current || !institutionsGroupRef.current) return;
+    const group = institutionsGroupRef.current;
+    group.removeAll();
 
-        deputy.receptionSchedules.forEach((schedule) => {
-          const isSelected = selectedReception?.id === schedule.id;
-          const iconHtml = `
-            <div class="relative group cursor-pointer" style="pointer-events: auto;">
-              <div class="w-8 h-8 rounded-full flex items-center justify-center shadow-md border-2 transition-transform transform ${
-                isSelected
-                  ? 'bg-amber-500 border-white text-white scale-125 shadow-amber-500/50'
-                  : 'bg-white border-amber-500 text-amber-600 hover:scale-110'
-              }">
-                <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M16 21v-2a4 4 0 0 0-4-4H6a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M22 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
-              </div>
-              <div class="custom-map-hover-label absolute -top-8 left-1/2 -translate-x-1/2 whitespace-nowrap bg-slate-900 text-white text-[11px] font-semibold px-2 py-1 rounded-md shadow-2xl border border-slate-700 opacity-0 group-hover:opacity-100 transition-opacity duration-150 pointer-events-none z-50">
-                Приемная депутата: ${deputy.shortName}
-              </div>
+    if (!showInstitutions) return;
+
+    const ymaps = window.ymaps;
+    if (!ymaps) return;
+
+    institutions
+      .filter((inst) => inst && isValidLatLng(inst.coordinates))
+      .forEach((inst) => {
+        const iconLayout = ymaps.templateLayoutFactory.createClass(
+          `<div class="ym-custom-inst cursor-pointer group" style="position:relative; width:32px; height:32px; transform:translate(-16px, -16px);" title="${inst.shortName}">
+            <div style="width:32px; height:32px; background:#2563eb; border-radius:50%; box-shadow:0 4px 12px rgba(37,99,235,0.4); border:2.5px solid #ffffff; display:flex; align-items:center; justify-content:center; transition:transform 0.15s ease;">
+              <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="4" y="2" width="16" height="20" rx="2" ry="2"></rect>
+                <path d="M9 22v-4h6v4"></path>
+                <path d="M8 6h.01"></path>
+                <path d="M16 6h.01"></path>
+                <path d="M12 6h.01"></path>
+                <path d="M12 10h.01"></path>
+                <path d="M12 14h.01"></path>
+                <path d="M16 10h.01"></path>
+                <path d="M16 14h.01"></path>
+                <path d="M8 10h.01"></path>
+                <path d="M8 14h.01"></path>
+              </svg>
             </div>
-          `;
+          </div>`
+        );
 
-          const el = document.createElement('div');
-          el.innerHTML = iconHtml;
-          el.addEventListener('click', () => onSelectReception(schedule, deputy, district));
+        const placemark = new ymaps.Placemark(
+          inst.coordinates,
+          {
+            hintContent: `<strong>${inst.shortName}</strong><br/>${inst.address}`,
+            balloonContentHeader: `<div class="font-bold text-slate-900 text-sm">${inst.name}</div>`,
+            balloonContentBody: `
+              <div class="text-xs text-slate-600 mt-1 space-y-1">
+                <div>📍 <strong>Адрес:</strong> ${inst.address}</div>
+                ${inst.phone ? `<div>📞 <strong>Телефон:</strong> ${inst.phone}</div>` : ''}
+                ${inst.workSchedule ? `<div>🕒 <strong>Режим работы:</strong> ${inst.workSchedule}</div>` : ''}
+              </div>
+            `,
+            balloonContentFooter: `<div class="text-[10px] text-blue-600 font-semibold mt-1">Орган исполнительной власти</div>`,
+          },
+          {
+            iconLayout: iconLayout,
+            iconShape: {
+              type: 'Circle',
+              coordinates: [0, 0],
+              radius: 16,
+            },
+            hideIconOnBalloonOpen: false,
+          }
+        );
 
-          const marker = new ymapsApiRef.current.YMapMarker({
-            coordinates: toMapGLCoords(schedule.coordinates),
-          }, el);
-
-          mapInstanceRef.current.addChild(marker);
-          markersRef.current.push(marker);
+        placemark.events.add('click', () => {
+          onSelectInstitution(inst);
         });
+
+        group.add(placemark);
       });
-    }
-  }, [
-    districts,
-    deputies,
-    institutions,
-    selectedInstitution,
-    selectedReception,
-    showInstitutions,
-    showReceptions,
-    onSelectInstitution,
-    onSelectReception,
-  ]);
+  }, [isMapReady, institutions, showInstitutions, onSelectInstitution]);
 
-  // Render User Location Geolocation Pin
+  // Render Reception Schedules Placemarks
   useEffect(() => {
-    if (!mapInstanceRef.current || !ymapsApiRef.current) return;
+    if (!isMapReady || !mapInstanceRef.current || !receptionsGroupRef.current) return;
+    const group = receptionsGroupRef.current;
+    group.removeAll();
 
-    if (userLocation) {
-      if (userMarkerRef.current) {
-        userMarkerRef.current.update({ coordinates: toMapGLCoords(userLocation) });
-      } else {
-        const iconHtml = `
-          <div class="relative flex items-center justify-center">
-            <div class="absolute w-8 h-8 bg-blue-500/30 rounded-full animate-ping"></div>
-            <div class="w-5 h-5 bg-blue-600 border-2 border-white rounded-full shadow-lg flex items-center justify-center text-white">
-              <div class="w-1.5 h-1.5 bg-white rounded-full"></div>
-            </div>
-          </div>
-        `;
-        const el = document.createElement('div');
-        el.innerHTML = iconHtml;
-        userMarkerRef.current = new ymapsApiRef.current.YMapMarker({
-          coordinates: toMapGLCoords(userLocation),
-        }, el);
-        mapInstanceRef.current.addChild(userMarkerRef.current);
+    if (!showReceptions) return;
+
+    const ymaps = window.ymaps;
+    if (!ymaps) return;
+
+    deputies.forEach((deputy) => {
+      if (!deputy) return;
+      const district = districts.find((d) => d && d.id === deputy.districtId);
+      if (!district) return;
+
+      (deputy.receptionSchedules || [])
+        .filter((schedule) => schedule && isValidLatLng(schedule.coordinates))
+        .forEach((schedule) => {
+          const iconLayout = ymaps.templateLayoutFactory.createClass(
+            `<div class="ym-custom-rec cursor-pointer group" style="position:relative; width:32px; height:32px; transform:translate(-16px, -16px);" title="Приёмная: ${deputy.shortName}">
+              <div style="width:32px; height:32px; background:#f59e0b; border-radius:50%; box-shadow:0 4px 12px rgba(245,158,11,0.4); border:2.5px solid #ffffff; display:flex; align-items:center; justify-content:center; transition:transform 0.15s ease;">
+                <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+                  <path d="M14 2H6a2 2 0 0 0-2 2v16a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V8z"></path>
+                  <polyline points="14 2 14 8 20 8"></polyline>
+                  <line x1="16" y1="13" x2="8" y2="13"></line>
+                  <line x1="16" y1="17" x2="8" y2="17"></line>
+                  <polyline points="10 9 9 9 8 9"></polyline>
+                </svg>
+              </div>
+            </div>`
+          );
+
+          const placemark = new ymaps.Placemark(
+            schedule.coordinates,
+            {
+              hintContent: `<strong>Приёмная депутата: ${deputy.shortName}</strong><br/>${schedule.locationName}`,
+              balloonContentHeader: `<div class="font-bold text-slate-900 text-sm">Приёмная депутата: ${deputy.fullName}</div>`,
+              balloonContentBody: `
+                <div class="text-xs text-slate-600 mt-1 space-y-1">
+                  <div>🏛️ <strong>Округ:</strong> ${district.shortName}</div>
+                  <div>📍 <strong>Адрес:</strong> ${schedule.address} (${schedule.room})</div>
+                  <div>📅 <strong>График:</strong> ${schedule.frequency} ${schedule.time}</div>
+                  <div>📞 <strong>Телефон:</strong> ${schedule.phone || deputy.phone}</div>
+                </div>
+              `,
+              balloonContentFooter: `<div class="text-[10px] text-amber-600 font-semibold mt-1">Место личного приёма избирателей</div>`,
+            },
+            {
+              iconLayout: iconLayout,
+              iconShape: {
+                type: 'Circle',
+                coordinates: [0, 0],
+                radius: 16,
+              },
+              hideIconOnBalloonOpen: false,
+            }
+          );
+
+          placemark.events.add('click', () => {
+            onSelectReception(schedule, deputy, district);
+          });
+
+          group.add(placemark);
+        });
+    });
+  }, [isMapReady, deputies, districts, showReceptions, onSelectReception]);
+
+  // Render Selected District Polygon
+  useEffect(() => {
+    if (!isMapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+    const ymaps = window.ymaps;
+    if (!ymaps) return;
+
+    if (districtPolygonRef.current) {
+      map.geoObjects.remove(districtPolygonRef.current);
+      districtPolygonRef.current = null;
+    }
+
+    if (showDistrictBorders && selectedDistrict && Array.isArray(selectedDistrict.polygonCoordinates) && selectedDistrict.polygonCoordinates.length > 2) {
+      try {
+        const polygon = new ymaps.Polygon(
+          [selectedDistrict.polygonCoordinates],
+          {
+            hintContent: `<strong>${selectedDistrict.name}</strong>`,
+            balloonContentHeader: `<div class="font-bold text-slate-900">${selectedDistrict.name}</div>`,
+            balloonContentBody: `<div class="text-xs text-slate-600">${selectedDistrict.description}</div>`,
+          },
+          {
+            fillColor: selectedDistrict.color || '#3b82f6',
+            fillOpacity: 0.18,
+            strokeColor: selectedDistrict.strokeColor || '#1d4ed8',
+            strokeWidth: 3,
+            strokeOpacity: 0.85,
+          }
+        );
+
+        polygon.events.add('click', () => {
+          onSelectDistrict(selectedDistrict);
+        });
+
+        map.geoObjects.add(polygon);
+        districtPolygonRef.current = polygon;
+      } catch (err) {
+        console.warn('Polygon rendering error:', err);
       }
-    } else if (userMarkerRef.current) {
-      mapInstanceRef.current.removeChild(userMarkerRef.current);
+    }
+  }, [isMapReady, selectedDistrict, showDistrictBorders, onSelectDistrict]);
+
+  // Render User Location Pin
+  useEffect(() => {
+    if (!isMapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+    const ymaps = window.ymaps;
+    if (!ymaps) return;
+
+    if (userMarkerRef.current) {
+      map.geoObjects.remove(userMarkerRef.current);
       userMarkerRef.current = null;
     }
-  }, [userLocation]);
 
-  // Render Searched Address/Location Pin
-  useEffect(() => {
-    if (!mapInstanceRef.current || !ymapsApiRef.current) return;
-
-    if (searchedLocation) {
-      if (searchMarkerRef.current) {
-        searchMarkerRef.current.update({ coordinates: toMapGLCoords(searchedLocation.coordinates) });
-      } else {
-        const iconHtml = `
-          <div class="relative flex items-center justify-center" style="transform: translate(0, -50%);">
-            <div class="absolute -top-1 w-9 h-9 bg-rose-500/30 rounded-full animate-ping"></div>
-            <div class="w-8 h-8 bg-rose-600 border-2 border-white rounded-full shadow-lg flex items-center justify-center text-white z-50">
-              <svg xmlns="http://www.w3.org/2000/svg" class="w-4 h-4" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><path d="M20 10c0 6-8 12-8 12s-8-6-8-12a8 8 0 0 1 16 0Z"/><circle cx="12" cy="10" r="3"/></svg>
-            </div>
+    if (userLocation && isValidLatLng(userLocation)) {
+      const userLayout = ymaps.templateLayoutFactory.createClass(
+        `<div class="ym-custom-user" style="position:relative; width:28px; height:28px; transform:translate(-14px, -14px);">
+          <div style="width:28px; height:28px; background:#2563eb; border-radius:50%; box-shadow:0 0 0 5px rgba(37,99,235,0.25); border:2.5px solid #ffffff; display:flex; align-items:center; justify-content:center;">
+            <div style="width:8px; height:8px; background:white; border-radius:50%;"></div>
           </div>
-        `;
-        
-        const el = document.createElement('div');
-        el.innerHTML = iconHtml;
-        searchMarkerRef.current = new ymapsApiRef.current.YMapMarker({
-          coordinates: toMapGLCoords(searchedLocation.coordinates),
-        }, el);
-        mapInstanceRef.current.addChild(searchMarkerRef.current);
-      }
+        </div>`
+      );
 
-      // Center map on searched location
-      mapInstanceRef.current.setLocation({ center: toMapGLCoords(searchedLocation.coordinates), zoom: 16, duration: 800 });
-    } else if (searchMarkerRef.current) {
-      mapInstanceRef.current.removeChild(searchMarkerRef.current);
+      const placemark = new ymaps.Placemark(
+        userLocation,
+        {
+          hintContent: 'Ваше текущее местоположение',
+          balloonContent: '<div class="text-xs font-semibold p-1">📍 Ваше местоположение (GPS)</div>',
+        },
+        {
+          iconLayout: userLayout,
+          iconShape: {
+            type: 'Circle',
+            coordinates: [0, 0],
+            radius: 14,
+          },
+        }
+      );
+
+      map.geoObjects.add(placemark);
+      userMarkerRef.current = placemark;
+    }
+  }, [isMapReady, userLocation]);
+
+  // Render Searched Location Pin
+  useEffect(() => {
+    if (!isMapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+    const ymaps = window.ymaps;
+    if (!ymaps) return;
+
+    if (searchMarkerRef.current) {
+      map.geoObjects.remove(searchMarkerRef.current);
       searchMarkerRef.current = null;
     }
-  }, [searchedLocation]);
 
-  // Center/Fly to Selected District or Element
-  useEffect(() => {
-    if (!mapInstanceRef.current) return;
+    if (searchedLocation && isValidLatLng(searchedLocation.coordinates)) {
+      const searchLayout = ymaps.templateLayoutFactory.createClass(
+        `<div class="ym-custom-search" style="position:relative; width:34px; height:34px; transform:translate(-17px, -17px);">
+          <div style="width:34px; height:34px; background:#e11d48; border-radius:50%; box-shadow:0 4px 14px rgba(225,29,72,0.45); border:2.5px solid #ffffff; display:flex; align-items:center; justify-content:center;">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round">
+              <circle cx="11" cy="11" r="8"></circle>
+              <line x1="21" y1="21" x2="16.65" y2="16.65"></line>
+            </svg>
+          </div>
+        </div>`
+      );
 
-    if (searchedLocation) {
-        mapInstanceRef.current.setLocation({ center: toMapGLCoords(searchedLocation.coordinates), zoom: 16, duration: 800 });
-    } else if (selectedReception) {
-        mapInstanceRef.current.setLocation({ center: toMapGLCoords(selectedReception.coordinates), zoom: 16, duration: 800 });
-    } else if (selectedInstitution) {
-        mapInstanceRef.current.setLocation({ center: toMapGLCoords(selectedInstitution.coordinates), zoom: 16, duration: 800 });
-    } else if (selectedDistrict) {
-        mapInstanceRef.current.setLocation({ center: toMapGLCoords(selectedDistrict.center), zoom: 14.5, duration: 800 });
+      const placemark = new ymaps.Placemark(
+        searchedLocation.coordinates,
+        {
+          hintContent: searchedLocation.title,
+          balloonContentHeader: `<div class="font-bold text-slate-900 text-sm">${searchedLocation.title}</div>`,
+          balloonContentBody: `<div class="text-xs text-slate-600">${searchedLocation.subtitle || 'Найденный адрес'}</div>`,
+        },
+        {
+          iconLayout: searchLayout,
+          iconShape: {
+            type: 'Circle',
+            coordinates: [0, 0],
+            radius: 17,
+          },
+        }
+      );
+
+      map.geoObjects.add(placemark);
+      searchMarkerRef.current = placemark;
     }
-  }, [selectedDistrict, selectedInstitution, selectedReception, searchedLocation]);
+  }, [isMapReady, searchedLocation]);
 
-  const handleResetView = () => {
-    if (!mapInstanceRef.current) return;
-    mapInstanceRef.current.setLocation({ center: toMapGLCoords(GRODNO_MAP_CONFIG.defaultCenter), zoom: GRODNO_MAP_CONFIG.defaultZoom, duration: 800 });
+  // Smooth Camera Centering & Animation on State Changes
+  useEffect(() => {
+    if (!isMapReady || !mapInstanceRef.current) return;
+    const map = mapInstanceRef.current;
+
+    try {
+      if (searchedLocation && isValidLatLng(searchedLocation.coordinates)) {
+        map.setCenter(searchedLocation.coordinates, 16, { duration: 600, checkZoomRange: true });
+      } else if (selectedReception && isValidLatLng(selectedReception.coordinates)) {
+        map.setCenter(selectedReception.coordinates, 16, { duration: 600, checkZoomRange: true });
+      } else if (selectedInstitution && isValidLatLng(selectedInstitution.coordinates)) {
+        map.setCenter(selectedInstitution.coordinates, 16, { duration: 600, checkZoomRange: true });
+      } else if (selectedDistrict && isValidLatLng(selectedDistrict.center)) {
+        map.setCenter(selectedDistrict.center, 14, { duration: 600, checkZoomRange: true });
+      } else if (userLocation && isValidLatLng(userLocation)) {
+        map.setCenter(userLocation, 16, { duration: 600, checkZoomRange: true });
+      }
+    } catch (err) {
+      console.warn('Yandex Map camera animation error:', err);
+    }
+  }, [isMapReady, searchedLocation, selectedReception, selectedInstitution, selectedDistrict, userLocation]);
+
+  // Viewport action handlers
+  const handleResetView = useCallback(() => {
+    if (mapInstanceRef.current) {
+      mapInstanceRef.current.setCenter(GRODNO_MAP_CONFIG.defaultCenter, GRODNO_MAP_CONFIG.defaultZoom, {
+        duration: 600,
+        checkZoomRange: true,
+      });
+    }
+  }, []);
+
+  const zoomIn = () => {
+    if (mapInstanceRef.current) {
+      const curZoom = mapInstanceRef.current.getZoom();
+      mapInstanceRef.current.setZoom(curZoom + 1, { duration: 250 });
+    }
+  };
+
+  const zoomOut = () => {
+    if (mapInstanceRef.current) {
+      const curZoom = mapInstanceRef.current.getZoom();
+      mapInstanceRef.current.setZoom(curZoom - 1, { duration: 250 });
+    }
   };
 
   return (
     <div className="relative w-full h-full min-h-[480px] bg-slate-100 overflow-hidden select-none">
-      {/* Map DOM container */}
-      <div id="gis-map-canvas" ref={mapContainerRef} className="w-full h-full z-0" />
+      {/* Map Container for Yandex Maps */}
+      <div ref={mapContainerRef} id="yandex-map-container" className="w-full h-full z-0" />
 
-      {/* High Density Map Legend & Layer Controls (Top Right) */}
-      <div className="absolute top-4 right-4 z-20 flex flex-col bg-white/95 backdrop-blur-xl p-3.5 rounded-2xl shadow-lg border border-slate-200/80 pointer-events-auto min-w-[220px]">
-        <div className="flex items-center gap-2 mb-3">
-          <Layers className="w-4 h-4 text-blue-600" />
-          <h4 className="text-[11px] font-bold text-slate-800 uppercase tracking-widest">
-            Слои карты
-          </h4>
-        </div>
-        
-        <div className="space-y-2.5">
-          <label className="flex items-center gap-3 cursor-pointer group">
-            <div className="relative flex items-center justify-center">
-              <input
-                type="checkbox"
-                checked={showReceptions}
-                onChange={(e) => setShowReceptions(e.target.checked)}
-                className="peer sr-only"
-              />
-              <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
-              <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
-            </div>
-            <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-sm" />
-              Места приёма
-            </span>
-          </label>
+      {/* Top Right: Layer & Map Type Controls */}
+      <div className="absolute top-4 right-4 z-[400] flex flex-col gap-2 pointer-events-auto">
+        {/* Layer Controls Card */}
+        <div className="bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-lg border border-slate-200/80 min-w-[210px]">
+          <div className="flex items-center gap-2 mb-2.5">
+            <Layers className="w-4 h-4 text-blue-600" />
+            <h4 className="text-[11px] font-bold text-slate-800 uppercase tracking-widest">
+              Слои Яндекс Карт
+            </h4>
+          </div>
 
-          <label className="flex items-center gap-3 cursor-pointer group">
-            <div className="relative flex items-center justify-center">
-              <input
-                type="checkbox"
-                checked={showInstitutions}
-                onChange={(e) => setShowInstitutions(e.target.checked)}
-                className="peer sr-only"
-              />
-              <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-blue-600 peer-checked:bg-blue-600 transition-colors"></div>
-              <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
-            </div>
-            <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
-              <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-sm" />
-              Органы власти
-            </span>
-          </label>
+          <div className="space-y-2">
+            <label className="flex items-center gap-2.5 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={showReceptions}
+                  onChange={(e) => setShowReceptions(e.target.checked)}
+                  className="peer sr-only"
+                />
+                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
+                <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
+              </div>
+              <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs" />
+                Места приёма
+              </span>
+            </label>
+
+            <label className="flex items-center gap-2.5 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={showInstitutions}
+                  onChange={(e) => setShowInstitutions(e.target.checked)}
+                  className="peer sr-only"
+                />
+                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-blue-600 peer-checked:bg-blue-600 transition-colors"></div>
+                <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
+              </div>
+              <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" />
+                Органы власти
+              </span>
+            </label>
+
+            <label className="flex items-center gap-2.5 cursor-pointer group">
+              <div className="relative flex items-center justify-center">
+                <input
+                  type="checkbox"
+                  checked={showDistrictBorders}
+                  onChange={(e) => setShowDistrictBorders(e.target.checked)}
+                  className="peer sr-only"
+                />
+                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-indigo-600 peer-checked:bg-indigo-600 transition-colors"></div>
+                <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
+              </div>
+              <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
+                <div className="w-2.5 h-2.5 rounded-full bg-indigo-600 shadow-xs" />
+                Границы округа
+              </span>
+            </label>
+          </div>
+
+          {/* Map Type switcher buttons */}
+          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px] font-semibold">
+            <button
+              type="button"
+              onClick={() => handleChangeMapType('yandex#map')}
+              className={`px-2 py-1 rounded transition-colors ${
+                mapType === 'yandex#map' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              Схема
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChangeMapType('yandex#satellite')}
+              className={`px-2 py-1 rounded transition-colors ${
+                mapType === 'yandex#satellite' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              Спутник
+            </button>
+            <button
+              type="button"
+              onClick={() => handleChangeMapType('yandex#hybrid')}
+              className={`px-2 py-1 rounded transition-colors ${
+                mapType === 'yandex#hybrid' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+              }`}
+            >
+              Гибрид
+            </button>
+          </div>
         </div>
       </div>
 
-      {/* Floating Action Controls (Bottom Right Circular Buttons) */}
-      <div className="absolute bottom-6 right-6 z-20 flex flex-col gap-2 pointer-events-auto">
+      {/* Floating Action Controls on Bottom Right */}
+      <div className="absolute bottom-6 right-6 z-[400] flex flex-col gap-2 pointer-events-auto">
         <button
           type="button"
-          onClick={() => {
-            if (mapInstanceRef.current) {
-                const zoom = mapInstanceRef.current.zoom;
-                mapInstanceRef.current.setLocation({ zoom: zoom + 1, duration: 300 });
-            }
-          }}
+          onClick={zoomIn}
           className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-700 font-bold hover:bg-slate-50 active:scale-95 transition text-lg border border-slate-100"
           title="Приблизить"
         >
@@ -333,12 +562,7 @@ export const GisMap: React.FC<GisMapProps> = ({
         </button>
         <button
           type="button"
-          onClick={() => {
-            if (mapInstanceRef.current) {
-                const zoom = mapInstanceRef.current.zoom;
-                mapInstanceRef.current.setLocation({ zoom: zoom - 1, duration: 300 });
-            }
-          }}
+          onClick={zoomOut}
           className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-700 font-bold hover:bg-slate-50 active:scale-95 transition text-lg border border-slate-100"
           title="Отдалить"
         >
@@ -346,7 +570,6 @@ export const GisMap: React.FC<GisMapProps> = ({
         </button>
         <button
           type="button"
-          id="btn-map-locate-me"
           onClick={onTriggerGeolocation}
           disabled={isLocating}
           className="w-10 h-10 bg-blue-600 rounded-full shadow-lg flex items-center justify-center text-white hover:bg-blue-700 active:scale-95 transition disabled:opacity-50"
@@ -356,7 +579,6 @@ export const GisMap: React.FC<GisMapProps> = ({
         </button>
         <button
           type="button"
-          id="btn-map-reset-view"
           onClick={handleResetView}
           className="w-10 h-10 bg-white rounded-full shadow-lg flex items-center justify-center text-slate-700 hover:bg-slate-50 active:scale-95 transition border border-slate-100"
           title="Сбросить вид к общему плану г. Гродно"
@@ -366,16 +588,19 @@ export const GisMap: React.FC<GisMapProps> = ({
       </div>
 
       {/* Map Legend Banner at Bottom Left */}
-      <div className="absolute bottom-6 left-4 z-20 bg-white/95 backdrop-blur px-3 py-1.5 rounded-md shadow border border-slate-200 text-[11px] text-slate-600 flex items-center gap-3">
-        <span className="font-bold text-slate-800 uppercase tracking-wider text-[10px]">г. Гродно</span>
+      <div className="absolute bottom-6 left-4 z-[400] bg-white/95 backdrop-blur px-3 py-1.5 rounded-md shadow border border-slate-200 text-[11px] text-slate-600 flex items-center gap-3">
+        <div className="flex items-center gap-1.5 font-bold text-slate-800 uppercase tracking-wider text-[10px]">
+          <MapIcon className="w-3.5 h-3.5 text-red-500" />
+          <span>Яндекс Карты</span>
+        </div>
         <div className="h-3 w-px bg-slate-300"></div>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-blue-600"></span>
-          <span className="font-medium text-slate-700">Ленинский район</span>
+          <span className="font-medium text-slate-700">Ленинский</span>
         </div>
         <div className="flex items-center gap-1.5">
           <span className="w-2 h-2 rounded-full bg-emerald-600"></span>
-          <span className="font-medium text-slate-700">Октябрьский район</span>
+          <span className="font-medium text-slate-700">Октябрьский</span>
         </div>
       </div>
     </div>

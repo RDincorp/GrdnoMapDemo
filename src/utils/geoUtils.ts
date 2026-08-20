@@ -93,12 +93,12 @@ export function parseAddressQuery(query: string | undefined | null): { streetPar
 /**
  * Evaluates whether a house number satisfies the street rule
  */
-export function checkHouseMatchesRule(houseNumber: number | undefined, rule: StreetHouseRule): boolean {
-  if (houseNumber === undefined) return true; // Matches entire street
+export function checkHouseMatchesRule(houseNumber: number | undefined, rule?: StreetHouseRule | null): boolean {
+  if (houseNumber === undefined || !rule) return true; // Matches entire street
   
   if (rule.houseType === 'all') return true;
 
-  if (rule.houseType === 'range' && rule.range) {
+  if (rule.houseType === 'range' && rule.range && Array.isArray(rule.range) && rule.range.length === 2) {
     return houseNumber >= rule.range[0] && houseNumber <= rule.range[1];
   }
 
@@ -110,10 +110,10 @@ export function checkHouseMatchesRule(houseNumber: number | undefined, rule: Str
     return houseNumber % 2 !== 0;
   }
 
-  if (rule.houseType === 'specific' && rule.specificHouses) {
+  if (rule.houseType === 'specific' && rule.specificHouses && Array.isArray(rule.specificHouses)) {
     return rule.specificHouses.some((h) => {
       if (typeof h === 'number') return h === houseNumber;
-      return parseInt(h, 10) === houseNumber || String(h).toLowerCase() === String(houseNumber).toLowerCase();
+      return parseInt(String(h), 10) === houseNumber || String(h).toLowerCase() === String(houseNumber).toLowerCase();
     });
   }
 
@@ -207,25 +207,65 @@ export const GRODNO_STREET_COORDINATES: Record<string, [number, number]> = {
   'улица лермонтова': [53.686425, 23.829466],
   'улица гагарина': [53.672356, 23.813646],
   'проспект клецкова': [53.6520, 23.8550],
-  'улица кабяка': [53.6535, 23.8680],
-  'улица пестрака': [53.6530, 23.8450],
+  'улица кабяка': [53.641908, 23.844719],
+  'улица пестрака': [53.653506, 23.839266],
   'переулок пестрака': [53.6540, 23.8470],
   'проспект янки купалы': [53.6580, 23.8390],
-  'индурское шоссе': [53.6440, 23.8580],
-  'улица томина': [53.6610, 23.8580],
+  'индурское шоссе': [53.645420, 23.843713],
+  'улица томина': [53.649119, 23.826708],
+  'улица виленская': [53.684074, 23.828127],
+  'улица брикеля': [53.697595, 23.854699],
+  'улица лиможа': [53.710036, 23.850477],
+  'улица виктора глухова': [53.722223, 23.875900],
+  'улица красноармейская': [53.677263, 23.842294],
+  'улица победы': [53.659637, 23.834083],
+  'улица транспортная': [53.670473, 23.822360],
+  'улица наполеона орды': [53.621234, 23.814563],
+  'улица кремко': [53.636617, 23.861491],
+  'улица вишневецкая': [53.641892, 23.853092],
+  'скидельское шоссе': [53.663970, 23.941701],
+  'улица орджоникидзе': [53.667016, 23.822082],
+  'улица фомичева': [53.662124, 23.844522],
+  'улица белуша': [53.672799, 23.848097],
+  'улица гаспадарчая': [53.708911, 23.828352],
+  'улица карского': [53.690307, 23.878208],
 };
 
-export function getExactStreetCoordinates(streetName: string, fallbackCenter: [number, number]): [number, number] {
+export const DEFAULT_GRODNO_COORDINATES: [number, number] = [53.683839, 23.833462];
+
+/**
+ * Validates if coordinates are a valid [lat, lng] tuple of finite numbers
+ */
+export function isValidLatLng(coords: any): coords is [number, number] {
+  return (
+    Array.isArray(coords) &&
+    coords.length === 2 &&
+    typeof coords[0] === 'number' &&
+    typeof coords[1] === 'number' &&
+    !isNaN(coords[0]) &&
+    !isNaN(coords[1]) &&
+    isFinite(coords[0]) &&
+    isFinite(coords[1])
+  );
+}
+
+export function getExactStreetCoordinates(streetName: string, fallbackCenter?: [number, number]): [number, number] {
+  const safeFallback: [number, number] = isValidLatLng(fallbackCenter)
+    ? fallbackCenter
+    : DEFAULT_GRODNO_COORDINATES;
+
   const norm = normalizeText(streetName);
-  if (GRODNO_STREET_COORDINATES[norm]) {
+  if (GRODNO_STREET_COORDINATES[norm] && isValidLatLng(GRODNO_STREET_COORDINATES[norm])) {
     return GRODNO_STREET_COORDINATES[norm];
   }
   for (const [key, coords] of Object.entries(GRODNO_STREET_COORDINATES)) {
     if (key.includes(norm) || norm.includes(key)) {
-      return coords;
+      if (isValidLatLng(coords)) {
+        return coords;
+      }
     }
   }
-  return fallbackCenter;
+  return safeFallback;
 }
 
 /**
@@ -272,13 +312,16 @@ const COMMON_STREET_TYPOS: Record<string, string[]> = {
 /**
  * Computes match score and typo correction for a street given a user's input
  */
-function scoreStreetMatch(queryStreet: string, streetName: string, aliases: string[]): { score: number; typoCorrection?: string } {
+function scoreStreetMatch(queryStreet: string, streetName?: string, aliases?: string[]): { score: number; typoCorrection?: string } {
+  if (!queryStreet || !streetName) return { score: 0 };
   const normQuery = normalizeText(queryStreet);
   if (!normQuery || normQuery.length < 3) return { score: 0 };
 
   const normStreet = normalizeText(streetName);
-  const normAliases = aliases.map((a) => normalizeText(a));
-  const allNames = [normStreet, ...normAliases];
+  const normAliases = (aliases || []).filter(Boolean).map((a) => normalizeText(a));
+  const allNames = [normStreet, ...normAliases].filter(Boolean);
+
+  if (allNames.length === 0) return { score: 0 };
 
   // 1. Exact match with street name or aliases
   if (allNames.some((n) => n === normQuery)) {
@@ -286,14 +329,14 @@ function scoreStreetMatch(queryStreet: string, streetName: string, aliases: stri
   }
 
   // 2. Starts with query (prefix match from 3 letters)
-  if (allNames.some((n) => n.startsWith(normQuery) || normQuery.startsWith(n))) {
+  if (allNames.some((n) => n && (n.startsWith(normQuery) || normQuery.startsWith(n)))) {
     return { score: 95 };
   }
 
   // 3. Check known Russian typo/habit dictionaries (e.g. "довлатова" -> "доватора")
   for (const [canonical, typoList] of Object.entries(COMMON_STREET_TYPOS)) {
-    if (normStreet.includes(canonical) || canonical.includes(normStreet)) {
-      if (typoList.some((t) => t === normQuery || normQuery.startsWith(t) || t.startsWith(normQuery))) {
+    if (canonical && (normStreet.includes(canonical) || canonical.includes(normStreet))) {
+      if (Array.isArray(typoList) && typoList.some((t) => t && (t === normQuery || normQuery.startsWith(t) || t.startsWith(normQuery)))) {
         return {
           score: 90,
           typoCorrection: `«${queryStreet}» → ${streetName}`,
@@ -303,14 +346,14 @@ function scoreStreetMatch(queryStreet: string, streetName: string, aliases: stri
   }
 
   // 4. Substring inclusion
-  if (allNames.some((n) => n.includes(normQuery) || normQuery.includes(n))) {
+  if (allNames.some((n) => n && (n.includes(normQuery) || normQuery.includes(n)))) {
     return { score: 85 };
   }
 
   // 5. Word stem / token matching (e.g. "довлатов" / "доватор", "пушкин" / "пушкина")
-  const queryTokens = normQuery.split(/\s+/).filter((t) => t.length >= 3);
+  const queryTokens = normQuery.split(/\s+/).filter((t) => t && t.length >= 3);
   for (const name of allNames) {
-    const nameTokens = name.split(/\s+/).filter((t) => t.length >= 3);
+    const nameTokens = name.split(/\s+/).filter((t) => t && t.length >= 3);
     for (const qToken of queryTokens) {
       for (const nToken of nameTokens) {
         // Stem prefix (first 4-5 chars)
@@ -370,10 +413,12 @@ export function searchEverything(
   const seenKeys = new Set<string>();
 
   // 1. Street / Address Matching (With live Russian language typo-tolerance & instant Deputy pairing)
-  districts.forEach((district) => {
-    const deputy = deputies.find((d) => d.id === district.deputyId);
+  (districts || []).forEach((district) => {
+    if (!district) return;
+    const deputy = (deputies || []).find((d) => d && d.id === district.deputyId);
 
-    district.streets.forEach((streetRule) => {
+    (district.streets || []).forEach((streetRule) => {
+      if (!streetRule || !streetRule.streetName) return;
       const match = scoreStreetMatch(streetPart, streetRule.streetName, streetRule.aliases);
 
       if (match.score > 0) {
@@ -434,12 +479,13 @@ export function searchEverything(
   });
 
   // 2. Deputy Direct Matching (Full name, job, commission)
-  deputies.forEach((deputy) => {
+  (deputies || []).forEach((deputy) => {
+    if (!deputy) return;
     const normDeputyName = normalizeText(deputy.fullName);
     const normShortName = normalizeText(deputy.shortName);
     const normCommission = normalizeText(deputy.commission);
     const normJob = normalizeText(deputy.mainJob);
-    const district = districts.find((d) => d.id === deputy.districtId);
+    const district = (districts || []).find((d) => d && d.id === deputy.districtId);
 
     const isNameMatch =
       normDeputyName.includes(normQuery) ||
@@ -452,15 +498,21 @@ export function searchEverything(
       const resKey = `dep-${deputy.id}`;
       if (!seenKeys.has(resKey)) {
         seenKeys.add(resKey);
+        const deputyCoord = (district && isValidLatLng(district.center))
+          ? district.center
+          : (deputy.receptionSchedules?.[0]?.coordinates && isValidLatLng(deputy.receptionSchedules[0].coordinates))
+          ? deputy.receptionSchedules[0].coordinates
+          : DEFAULT_GRODNO_COORDINATES;
+
         results.push({
           id: resKey,
           type: 'deputy',
           title: deputy.fullName,
           subtitle: `${deputy.levelTitle} • ${district?.shortName || ''}`,
-          highlightText: `👤 ${deputy.commissionRole}: ${deputy.commission} • Прием: ${deputy.receptionSchedules[0]?.frequency || ''}, ${deputy.receptionSchedules[0]?.time || ''}`,
+          highlightText: `👤 ${deputy.commissionRole || 'Депутат'}: ${deputy.commission || ''} • Прием: ${deputy.receptionSchedules?.[0]?.frequency || ''}, ${deputy.receptionSchedules?.[0]?.time || ''}`,
           districtId: district?.id,
           deputyId: deputy.id,
-          coordinates: district?.center,
+          coordinates: deputyCoord,
           deputy,
           district,
           confidenceScore: isNameMatch ? 98 : 70,
@@ -470,13 +522,14 @@ export function searchEverything(
   });
 
   // 3. District Matches (Name, Number, Key Objects)
-  districts.forEach((district) => {
+  (districts || []).forEach((district) => {
+    if (!district) return;
     const normDistName = normalizeText(district.name);
     const numMatch = query.match(/\d+/);
     const isNumMatch = numMatch && parseInt(numMatch[0], 10) === district.number;
-    const deputy = deputies.find((d) => d.id === district.deputyId);
+    const deputy = (deputies || []).find((d) => d && d.id === district.deputyId);
 
-    const matchesKeyObjects = district.keyObjects.some((obj) =>
+    const matchesKeyObjects = (district.keyObjects || []).some((obj) =>
       normalizeText(obj).includes(normQuery)
     );
 
@@ -489,15 +542,17 @@ export function searchEverything(
       const resKey = `dist-${district.id}`;
       if (!seenKeys.has(resKey)) {
         seenKeys.add(resKey);
+        const distCoord = isValidLatLng(district.center) ? district.center : DEFAULT_GRODNO_COORDINATES;
+
         results.push({
           id: resKey,
           type: 'district',
           title: district.name,
-          subtitle: `${district.districtAdministration} • Избирателей: ${district.votersCount.toLocaleString('ru-RU')}`,
-          highlightText: `Депутат: ${deputy?.fullName || '—'}. ${district.description}`,
+          subtitle: `${district.districtAdministration} • Избирателей: ${(district.votersCount || 0).toLocaleString('ru-RU')}`,
+          highlightText: `Депутат: ${deputy?.fullName || '—'}. ${district.description || ''}`,
           districtId: district.id,
           deputyId: deputy?.id,
-          coordinates: district.center,
+          coordinates: distCoord,
           deputy,
           district,
           confidenceScore: 85,
@@ -507,12 +562,13 @@ export function searchEverything(
   });
 
   // 4. Institutions Matches
-  institutions.forEach((inst) => {
+  (institutions || []).forEach((inst) => {
+    if (!inst) return;
     const normInstName = normalizeText(inst.name);
     const normShort = normalizeText(inst.shortName);
     const normHead = normalizeText(inst.headName);
     const normAddress = normalizeText(inst.address);
-    const matchesCompetency = inst.competencies.some((c) =>
+    const matchesCompetency = (inst.competencies || []).some((c) =>
       normalizeText(c).includes(normQuery)
     );
 
@@ -529,6 +585,8 @@ export function searchEverything(
       const resKey = `inst-${inst.id}`;
       if (!seenKeys.has(resKey)) {
         seenKeys.add(resKey);
+        const instCoord = isValidLatLng(inst.coordinates) ? inst.coordinates : DEFAULT_GRODNO_COORDINATES;
+
         results.push({
           id: resKey,
           type: 'institution',
@@ -536,7 +594,7 @@ export function searchEverything(
           subtitle: `${inst.categoryTitle} • ${inst.address}`,
           highlightText: `Руководитель: ${inst.headName} (${inst.headPosition})`,
           institutionId: inst.id,
-          coordinates: inst.coordinates,
+          coordinates: instCoord,
           institution: inst,
           confidenceScore: 75,
         });

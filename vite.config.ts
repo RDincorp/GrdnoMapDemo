@@ -5,7 +5,7 @@ import {defineConfig} from 'vite';
 
 export default defineConfig(() => {
   return {
-    base: '/GrdnoMapDemo/',
+    base: process.env.NODE_ENV === 'production' ? '/GrdnoMapDemo/' : '/',
     plugins: [react(), tailwindcss()],
     resolve: {
       alias: {
