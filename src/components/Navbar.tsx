@@ -1,12 +1,12 @@
 import React, { useRef } from 'react';
-import { BookOpen, HelpCircle, Shield, FileText } from 'lucide-react';
+import { HelpCircle, Shield, FileText } from 'lucide-react';
 import { District } from '../types';
 
 interface NavbarProps {
   districts: District[];
   selectedDistrict: District | null;
   onSelectDistrict: (district: District) => void;
-  onOpenGuideModal: () => void;
+  onOpenGuideModal?: () => void;
   onOpenAboutModal: () => void;
 }
 
@@ -14,7 +14,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   districts,
   selectedDistrict,
   onSelectDistrict,
-  onOpenGuideModal,
   onOpenAboutModal,
 }) => {
   const scrollRef = useRef<HTMLDivElement>(null);
@@ -85,17 +84,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Header Action Buttons */}
       <div className="flex items-center gap-3 shrink-0 text-sm font-medium">
-        <button
-          type="button"
-          id="btn-citizen-guide"
-          onClick={onOpenGuideModal}
-          className="px-4 py-2.5 bg-slate-50 hover:bg-slate-100 text-slate-700 border border-slate-200 rounded-xl transition-all active:scale-95 flex items-center gap-2 hover:shadow-sm"
-          title="Инструкция и памятка гражданину"
-        >
-          <BookOpen className="w-4 h-4 text-blue-600" />
-          <span className="hidden sm:inline font-bold">Инструкция</span>
-        </button>
-
         <button
           type="button"
           id="btn-about-portal"

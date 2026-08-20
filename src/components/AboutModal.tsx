@@ -1,5 +1,5 @@
 import React from 'react';
-import { X, Landmark, Compass, CheckCircle2, Map, Search, Users } from 'lucide-react';
+import { X, Landmark } from 'lucide-react';
 
 interface AboutModalProps {
   isOpen: boolean;
@@ -42,46 +42,8 @@ export const AboutModal: React.FC<AboutModalProps> = ({ isOpen, onClose }) => {
               Миссия и концепция проекта
             </h4>
             <p className="text-slate-600 text-[11px] leading-relaxed">
-              «Паспорт территории» — единый картографический интерфейс для граждан, объединяющий структуры исполнительной власти (горисполком, администрации районов) и представительной власти (депутаты городского Совета). Портал решает ключевую проблему отсутствия быстрой и наглядной связи между адресом жителя и ответственным за его дом депутатом.
+              Интерактивная политическая карта Беларуси – проект, нацеленный на картографическое сведение в одном интерфейсе структур государственного управления и представительной власти (на начальном этапе – исполкомы, депутаты Палаты представителей и местных Советов депутатов) в привязке к территории их ответственности, а также с предоставлением информации о возможностях и правах граждан в сфере взаимодействия с органами управления и представителями на всех уровнях. Технически это оформлено как «паспорт территории»: ветви представительной и исполнительной власти в одном интерфейсе, а в деталях – депутаты и учреждения/должностные лица со своими округами, приёмными и компетенциями.
             </p>
-          </div>
-
-          {/* Key Functions */}
-          <div className="space-y-2">
-            <h4 className="text-[10px] font-bold uppercase tracking-wider text-slate-400">
-              Реализованный функционал:
-            </h4>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-2">
-              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
-                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                  <Search className="w-3.5 h-3.5 text-blue-600" />
-                  <span>Умный адресный поиск</span>
-                </div>
-                <p className="text-[10px] text-slate-500 leading-snug">
-                  Мгновенно сопоставляет адрес (включая сокращения вроде «БЛК 25» или «ул. Пушкина 18») с границами округа.
-                </p>
-              </div>
-
-              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
-                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                  <Map className="w-3.5 h-3.5 text-emerald-600" />
-                  <span>Интерактивная GIS-карта</span>
-                </div>
-                <p className="text-[10px] text-slate-500 leading-snug">
-                  Векторные полигоны округов г. Гродно, точки общественных приемных, поддержка GPS геолокации.
-                </p>
-              </div>
-
-              <div className="p-2.5 rounded-lg bg-slate-50 border border-slate-200 space-y-0.5">
-                <div className="font-bold text-slate-900 flex items-center gap-1.5 text-xs">
-                  <Users className="w-3.5 h-3.5 text-purple-600" />
-                  <span>Карточки депутатов</span>
-                </div>
-                <p className="text-[10px] text-slate-500 leading-snug">
-                  Графики личного приема, прямые телефоны, комиссии горсовета и контакты помощников.
-                </p>
-              </div>
-            </div>
           </div>
         </div>
 
