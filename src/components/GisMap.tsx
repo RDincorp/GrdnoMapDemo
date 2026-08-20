@@ -2,7 +2,7 @@ import React, { useEffect, useState, useRef, useCallback } from 'react';
 import { District, Deputy, Institution, ReceptionScheduleItem } from '../types';
 import { GRODNO_MAP_CONFIG } from '../data/mockData';
 import { isValidLatLng } from '../utils/geoUtils';
-import { Layers, Locate, Maximize2, Check, Compass, Sparkles } from 'lucide-react';
+import { Layers, Locate, Maximize2, Check, Compass, Sparkles, ChevronDown } from 'lucide-react';
 
 // Declaration for Yandex Maps 2.1 global
 declare global {
@@ -51,6 +51,21 @@ export const GisMap: React.FC<GisMapProps> = ({
   const [showReceptions, setShowReceptions] = useState<boolean>(true);
   const [showInstitutions, setShowInstitutions] = useState<boolean>(true);
   const [showParties, setShowParties] = useState<boolean>(true);
+  const [isLayersOpen, setIsLayersOpen] = useState<boolean>(false);
+  const layersDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  // Close layers dropdown on click outside
+  useEffect(() => {
+    const handleClickOutside = (event: MouseEvent) => {
+      if (layersDropdownRef.current && !layersDropdownRef.current.contains(event.target as Node)) {
+        setIsLayersOpen(false);
+      }
+    };
+    document.addEventListener('mousedown', handleClickOutside);
+    return () => {
+      document.removeEventListener('mousedown', handleClickOutside);
+    };
+  }, []);
 
   // GeoObject collections refs
   const institutionsGroupRef = useRef<any>(null);
@@ -475,100 +490,111 @@ export const GisMap: React.FC<GisMapProps> = ({
       <div ref={mapContainerRef} id="yandex-map-container" className="w-full h-full z-0" />
 
       {/* Top Right: Layer & Map Type Controls */}
-      <div className="absolute top-4 right-4 z-[400] flex flex-col gap-2 pointer-events-auto">
-        {/* Layer Controls Card */}
-        <div className="bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-lg border border-slate-200/80 min-w-[210px]">
-          <div className="flex items-center gap-2 mb-2.5">
-            <Layers className="w-4 h-4 text-blue-600" />
-            <h4 className="text-[11px] font-bold text-slate-800 uppercase tracking-widest">
-              Слои Яндекс Карт
-            </h4>
+      <div ref={layersDropdownRef} className="absolute top-4 right-4 z-[400] pointer-events-auto">
+        <button
+          type="button"
+          id="btn-map-layers"
+          onClick={() => setIsLayersOpen(prev => !prev)}
+          className={`flex items-center gap-2 px-3 py-2 rounded-xl border shadow-md font-medium text-xs transition-all active:scale-95 ${
+            isLayersOpen
+              ? 'bg-blue-600 text-white border-blue-700 shadow-blue-900/20'
+              : 'bg-white/95 backdrop-blur-md text-slate-800 border-slate-200/80 hover:bg-white hover:border-slate-300'
+          }`}
+          title="Настройка отображения слоёв карты"
+        >
+          <Layers className={`w-4 h-4 ${isLayersOpen ? 'text-white' : 'text-blue-600'}`} />
+          <span className="font-bold">Слои карты</span>
+          <ChevronDown className={`w-3.5 h-3.5 transition-transform duration-200 ${isLayersOpen ? 'rotate-180 text-white' : 'text-slate-400'}`} />
+        </button>
+
+        {/* Dropdown Menu */}
+        {isLayersOpen && (
+          <div className="absolute right-0 mt-2 bg-white/95 backdrop-blur-xl p-3 rounded-2xl shadow-xl border border-slate-200/80 min-w-[220px]">
+            <div className="space-y-2">
+              <label className="flex items-center gap-2.5 cursor-pointer group">
+                <div className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    checked={showReceptions}
+                    onChange={(e) => setShowReceptions(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
+                  <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
+                </div>
+                <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs" />
+                  Приёмные депутатов
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2.5 cursor-pointer group">
+                <div className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    checked={showInstitutions}
+                    onChange={(e) => setShowInstitutions(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-blue-600 peer-checked:bg-blue-600 transition-colors"></div>
+                  <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
+                </div>
+                <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" />
+                  Органы управления
+                </span>
+              </label>
+
+              <label className="flex items-center gap-2.5 cursor-pointer group">
+                <div className="relative flex items-center justify-center">
+                  <input
+                    type="checkbox"
+                    checked={showParties}
+                    onChange={(e) => setShowParties(e.target.checked)}
+                    className="peer sr-only"
+                  />
+                  <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-violet-600 peer-checked:bg-violet-600 transition-colors"></div>
+                  <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
+                </div>
+                <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
+                  <div className="w-2.5 h-2.5 rounded-full bg-violet-600 shadow-xs" />
+                  Партийные организации
+                </span>
+              </label>
+            </div>
+
+            {/* Map Type switcher buttons */}
+            <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px] font-semibold">
+              <button
+                type="button"
+                onClick={() => handleChangeMapType('yandex#map')}
+                className={`px-2 py-1 rounded transition-colors ${
+                  mapType === 'yandex#map' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                Схема
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChangeMapType('yandex#satellite')}
+                className={`px-2 py-1 rounded transition-colors ${
+                  mapType === 'yandex#satellite' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                Спутник
+              </button>
+              <button
+                type="button"
+                onClick={() => handleChangeMapType('yandex#hybrid')}
+                className={`px-2 py-1 rounded transition-colors ${
+                  mapType === 'yandex#hybrid' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
+                }`}
+              >
+                Гибрид
+              </button>
+            </div>
           </div>
-
-          <div className="space-y-2">
-            <label className="flex items-center gap-2.5 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  checked={showReceptions}
-                  onChange={(e) => setShowReceptions(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-amber-500 peer-checked:bg-amber-500 transition-colors"></div>
-                <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
-              </div>
-              <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-amber-500 shadow-xs" />
-                Приёмные депутатов
-              </span>
-            </label>
-
-            <label className="flex items-center gap-2.5 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  checked={showInstitutions}
-                  onChange={(e) => setShowInstitutions(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-blue-600 peer-checked:bg-blue-600 transition-colors"></div>
-                <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
-              </div>
-              <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-blue-600 shadow-xs" />
-                Органы управления
-              </span>
-            </label>
-
-            <label className="flex items-center gap-2.5 cursor-pointer group">
-              <div className="relative flex items-center justify-center">
-                <input
-                  type="checkbox"
-                  checked={showParties}
-                  onChange={(e) => setShowParties(e.target.checked)}
-                  className="peer sr-only"
-                />
-                <div className="w-4 h-4 rounded-md border-2 border-slate-300 peer-checked:border-violet-600 peer-checked:bg-violet-600 transition-colors"></div>
-                <Check className="w-3 h-3 text-white absolute opacity-0 peer-checked:opacity-100 transition-opacity" strokeWidth={3} />
-              </div>
-              <span className="text-xs font-medium text-slate-600 group-hover:text-slate-900 transition-colors flex items-center gap-2">
-                <div className="w-2.5 h-2.5 rounded-full bg-violet-600 shadow-xs" />
-                Партийные организации
-              </span>
-            </label>
-          </div>
-
-          {/* Map Type switcher buttons */}
-          <div className="mt-3 pt-2.5 border-t border-slate-100 flex items-center justify-between gap-1 text-[10px] font-semibold">
-            <button
-              type="button"
-              onClick={() => handleChangeMapType('yandex#map')}
-              className={`px-2 py-1 rounded transition-colors ${
-                mapType === 'yandex#map' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              Схема
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChangeMapType('yandex#satellite')}
-              className={`px-2 py-1 rounded transition-colors ${
-                mapType === 'yandex#satellite' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              Спутник
-            </button>
-            <button
-              type="button"
-              onClick={() => handleChangeMapType('yandex#hybrid')}
-              className={`px-2 py-1 rounded transition-colors ${
-                mapType === 'yandex#hybrid' ? 'bg-blue-600 text-white shadow-xs' : 'text-slate-600 hover:bg-slate-100'
-              }`}
-            >
-              Гибрид
-            </button>
-          </div>
-        </div>
+        )}
       </div>
 
       {/* Floating Action Controls on Bottom Right */}
